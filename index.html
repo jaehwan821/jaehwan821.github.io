@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>컴퓨터 보안 및 수업 정보</title>
+    <style>
+        /* 기본 스타일 초기화 */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { 
+            font-family: 'Pretendard', -apple-system, sans-serif; 
+            line-height: 1.6; 
+            color: #333; 
+            background-color: #f4f7f6;
+        }
+        
+        /* 헤더 및 내비게이션 */
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        /* 섹션 공통 스타일 */
+        section {
+            padding: 40px 20px;
+            max-width: 800px;
+            margin: auto;
+            border-bottom: 1px solid #ddd;
+        }
+        h2 { color: #2980b9; margin-bottom: 15px; border-left: 5px solid #2980b9; padding-left: 10px; }
+
+        /* 갤러리 그리드 (모바일 대응) */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .gallery-item {
+            background: #ddd;
+            aspect-ratio: 1 / 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            color: #666;
+            overflow: hidden;
+        }
+        .gallery-item img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* 푸터 스타일 */
+        footer {
+            background: #333;
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+        .contact-info { margin-bottom: 10px; }
+        
+        /* 버튼/링크 스타일 */
+        .btn {
+            display: inline-block;
+            background: #2980b9;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>My Security Web</h1>
+    </header>
+
+    <section id="security">
+        <h2>01. 컴퓨터 보안 소개</h2>
+        <p>컴퓨터 보안은 정보 자산을 불법적인 접근, 변조, 파괴로부터 보호하는 기술입니다. 현대 사회에서 <strong>기밀성, 무결성, 가용성</strong>은 보안의 핵심 3요소로 불립니다.</p>
+        <p style="margin-top:10px;">스마트폰 환경에서는 개인정보 유출 방지를 위한 2단계 인증과 암호화가 매우 중요합니다.</p>
+    </section>
+
+    <section id="class-info">
+        <h2>02. 내 수업 정보</h2>
+        <ul style="list-style: none; padding: 0;">
+            <li><strong>강의명:</strong> 정보보안 개론</li>
+            <li><strong>강의실:</strong> 공학관 302호</li>
+            <li><strong>수업시간:</strong> 매주 화요일 14:00 - 16:00</li>
+            <li><strong>담당교수:</strong> 홍길동 교수님</li>
+        </ul>
+        <a href="#" class="btn">강의 계획서 다운로드</a>
+    </section>
+
+    <section id="gallery">
+        <h2>03. 갤러리</h2>
+        <div class="gallery-grid">
+            <div class="gallery-item">이미지 1</div>
+            <div class="gallery-item">이미지 2</div>
+            <div class="gallery-item">이미지 3</div>
+            <div class="gallery-item">이미지 4</div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="contact-info">
+            <h3>Contact & Info</h3>
+            <p>Email: contact@example.com</p>
+            <p>Tel: 010-1234-5678</p>
+        </div>
+        <hr style="margin: 15px 0; border: 0; border-top: 1px solid #555;">
+        <p>&copy; 2026 Your Name. All Rights Reserved.</p>
+    </footer>
+
+</body>
+</html>
