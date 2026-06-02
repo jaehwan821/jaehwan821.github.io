@@ -34,6 +34,45 @@
         }
         h2 { color: #2980b9; margin-bottom: 15px; border-left: 5px solid #2980b9; padding-left: 10px; }
 
+        /* 예제 목록 스타일 (추가됨) */
+        .example-container {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+        .example-box {
+            flex: 1;
+            min-width: 250px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            border-top: 3px solid #2980b9;
+        }
+        .example-box h3 {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        .example-box ul {
+            list-style: none;
+            padding: 0;
+        }
+        .example-box ul li {
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+        .example-box ul li a {
+            text-decoration: none;
+            color: #555;
+            transition: color 0.2s;
+        }
+        .example-box ul li a:hover {
+            color: #2980b9;
+            text-decoration: underline;
+        }
+
         /* 갤러리 그리드 (모바일 대응) */
         .gallery-grid {
             display: grid;
@@ -99,8 +138,34 @@
         <a href="#" class="btn">강의 계획서 다운로드</a>
     </section>
 
+    <section id="examples">
+        <h2>03. 실습 예제 목록</h2>
+        <div class="example-container">
+            <div class="example-box">
+                <h3>HTML 예제</h3>
+                <ul>
+                    <li><a href="#">• 기본 태그 활용 (h1~h6, p)</a></li>
+                    <li><a href="#">• 리스트와 하이퍼링크 (ul, a)</a></li>
+                    <li><a href="#">• 이미지 및 멀티미디어 삽입</a></li>
+                    <li><a href="#">• 테이블 구조 설계 (table)</a></li>
+                    <li><a href="#">• 입력 양식 만들기 (form)</a></li>
+                </ul>
+            </div>
+            <div class="example-box">
+                <h3>CSS 예제</h3>
+                <ul>
+                    <li><a href="#">• 텍스트 스타일링 (color, font)</a></li>
+                    <li><a href="#">• 박스 모델 (margin, padding)</a></li>
+                    <li><a href="#">• 배경 이미지 및 그라데이션</a></li>
+                    <li><a href="#">• Flexbox 레이아웃 배치</a></li>
+                    <li><a href="#">• 반응형 웹 미디어 쿼리</a></li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
     <section id="gallery">
-        <h2>03. 갤러리</h2>
+        <h2>04. 갤러리</h2>
         <div class="gallery-grid">
             <div class="gallery-item">이미지 1</div>
             <div class="gallery-item">이미지 2</div>
@@ -112,11 +177,12 @@
     <footer>
         <div class="contact-info">
             <h3>Contact & Info</h3>
+            <p>Name: 홍길동 (20260938)</p>
             <p>Email: contact@example.com</p>
             <p>Tel: 010-1234-5678</p>
         </div>
         <hr style="margin: 15px 0; border: 0; border-top: 1px solid #555;">
-        <p>&copy; 2026 Your Name. All Rights Reserved.</p>
+        <p>&copy; 2026 20260938. All Rights Reserved.</p>
     </footer>
 
 </body>
