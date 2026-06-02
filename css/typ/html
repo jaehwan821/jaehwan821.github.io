@@ -1,1 +1,771 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSS 타이포그래피 & 색상 레퍼런스</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 
+:root {
+  --bg:       #f5f2ec;
+  --paper:    #fdfbf7;
+  --ink:      #1a1612;
+  --ink2:     #5a5248;
+  --rule:     rgba(26,22,18,0.1);
+  --mono:     'IBM Plex Mono', monospace;
+  --serif:    'Playfair Display', Georgia, serif;
+  --sans:     'Noto Sans KR', sans-serif;
+  --sp:       40px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-weight: 300;
+  line-height: 1.8;
+}
+
+/* ── COVER ─────────────────────────────────── */
+.cover {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 100px var(--sp) 80px;
+  position: relative;
+  overflow: hidden;
+}
+.cover::before {
+  content:'';
+  position:absolute;
+  inset:0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 39px,
+    rgba(255,255,255,0.04) 39px,
+    rgba(255,255,255,0.04) 40px
+  );
+}
+.cover-inner { position:relative; max-width:860px; margin:0 auto; }
+.cover-kicker {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.4);
+  margin-bottom: 28px;
+}
+.cover h1 {
+  font-family: var(--serif);
+  font-size: clamp(2.4rem, 6vw, 4.5rem);
+  font-weight: 700;
+  line-height: 1.05;
+  margin-bottom: 24px;
+  letter-spacing: -0.02em;
+}
+.cover-sub {
+  font-size: 1rem;
+  color: rgba(255,255,255,0.5);
+  max-width: 480px;
+  line-height: 1.7;
+}
+.cover-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 36px;
+}
+.chip {
+  font-family: var(--mono);
+  font-size: 11px;
+  padding: 5px 14px;
+  border-radius: 100px;
+  border: 1px solid rgba(255,255,255,0.15);
+  color: rgba(255,255,255,0.55);
+}
+
+/* ── NAV ─────────────────────────────────── */
+.toc {
+  background: var(--paper);
+  border-bottom: 1px solid var(--rule);
+  padding: 0 var(--sp);
+  position: sticky;
+  top: 0;
+  z-index: 90;
+  overflow-x: auto;
+}
+.toc-inner {
+  max-width: 860px;
+  margin: 0 auto;
+  display: flex;
+  gap: 0;
+}
+.toc a {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink2);
+  text-decoration: none;
+  padding: 14px 16px;
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+  transition: all 0.15s;
+}
+.toc a:hover { color: var(--ink); border-bottom-color: var(--ink); }
+
+/* ── PAGE WRAPPER ───────────────────────── */
+.page { max-width: 860px; margin: 0 auto; padding: 0 var(--sp); }
+
+/* ── SECTION HEADER ─────────────────────── */
+.section-head {
+  display: flex;
+  align-items: baseline;
+  gap: 20px;
+  padding: 60px 0 32px;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 40px;
+}
+.section-num {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink2);
+  flex-shrink: 0;
+}
+.section-head h2 {
+  font-family: var(--serif);
+  font-size: 1.8rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+.section-desc {
+  font-size: 13px;
+  color: var(--ink2);
+  line-height: 1.7;
+  margin-left: auto;
+  max-width: 280px;
+  text-align: right;
+}
+
+/* ── EXAMPLE CARD ───────────────────────── */
+.ex-card {
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+.ex-top {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+}
+@media(max-width:620px){ .ex-top{ grid-template-columns:1fr; } }
+
+.ex-stage {
+  padding: 40px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 160px;
+  border-right: 1px solid var(--rule);
+  background: var(--bg);
+}
+@media(max-width:620px){ .ex-stage{ border-right:none; border-bottom:1px solid var(--rule); min-height:130px; } }
+
+.ex-info { padding: 28px 28px; }
+.ex-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink2);
+  margin-bottom: 6px;
+}
+.ex-name {
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 10px;
+  line-height: 1.3;
+}
+.ex-desc {
+  font-size: 13px;
+  color: var(--ink2);
+  line-height: 1.7;
+  margin-bottom: 14px;
+}
+.ex-code {
+  background: var(--ink);
+  color: #a8d8a8;
+  font-family: var(--mono);
+  font-size: 11px;
+  line-height: 1.8;
+  padding: 14px 16px;
+  border-radius: 7px;
+  overflow-x: auto;
+  white-space: pre;
+}
+
+/* ── COLOR GRID ─────────────────────────── */
+.color-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  margin-bottom: 60px;
+}
+.color-card {
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--rule);
+}
+.color-swatch {
+  height: 100px;
+  position: relative;
+}
+.color-swatch-label {
+  position: absolute;
+  bottom: 10px;
+  left: 12px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.05em;
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: rgba(0,0,0,0.25);
+  color: #fff;
+}
+.color-info {
+  background: var(--paper);
+  padding: 14px 16px;
+}
+.color-hex {
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+.color-name {
+  font-size: 12px;
+  color: var(--ink2);
+  margin-bottom: 6px;
+}
+.color-desc { font-size: 11px; color: var(--ink2); line-height: 1.6; }
+
+/* ── FOOTER ─────────────────────────────── */
+footer {
+  background: var(--ink);
+  color: rgba(255,255,255,0.35);
+  text-align: center;
+  padding: 40px var(--sp);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  margin-top: 80px;
+}
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<header class="cover">
+  <div class="cover-inner">
+    <p class="cover-kicker">// css reference document</p>
+    <h1>타이포그래피<br>&amp; 색상 레퍼런스</h1>
+    <p class="cover-sub">font, text 속성부터 text-shadow, color, direction, transform까지 — 10가지 실전 예제와 16진수 색상 팔레트</p>
+    <div class="cover-chips">
+      <span class="chip">font-family</span>
+      <span class="chip">font-size / weight</span>
+      <span class="chip">text-shadow</span>
+      <span class="chip">text-transform</span>
+      <span class="chip">direction</span>
+      <span class="chip">color #HEX</span>
+    </div>
+  </div>
+</header>
+
+<!-- NAV -->
+<nav class="toc" aria-label="목차">
+  <div class="toc-inner">
+    <a href="#font">Font 속성</a>
+    <a href="#text">Text 속성</a>
+    <a href="#shadow">Text-shadow</a>
+    <a href="#direction">Direction</a>
+    <a href="#transform">Transform</a>
+    <a href="#color">색상 팔레트</a>
+  </div>
+</nav>
+
+
+<div class="page">
+
+<!-- ═══════════════════════════════════════
+     SECTION 1 — FONT
+════════════════════════════════════════ -->
+<section id="font">
+  <div class="section-head">
+    <span class="section-num">01</span>
+    <h2>Font 속성</h2>
+    <p class="section-desc">글꼴 패밀리, 크기, 굵기, 스타일을 제어하는 기본 속성들</p>
+  </div>
+
+  <!-- EX 01 -->
+  <div class="ex-card">
+    <div class="ex-top">
+      <div class="ex-stage">
+        <p style="font-family:'Playfair Display',serif; font-size:2.2rem; font-weight:700; letter-spacing:-0.03em; color:#1a1612;">
+          Serif<br>Typeface
+        </p>
+      </div>
+      <div class="ex-info">
+        <p class="ex-label">예제 01 — font-family</p>
+        <p class="ex-name">폰트 패밀리 지정</p>
+        <p class="ex-desc">font-family는 텍스트에 적용할 글꼴을 지정합니다. 쉼표로 여러 글꼴을 나열하면 앞에서부터 사용 가능한 글꼴을 순서대로 적용하며, 마지막에 generic family(serif, sans-serif 등)를 폴백으로 지정하는 것이 관례입니다.</p>
+        <div class="ex-code">font-family: 'Playfair Display', Georgia, serif;
+font-size: 2.2rem;
+font-weight: 700;</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EX 02 -->
+  <div class="ex-card">
+    <div class="ex-top">
+      <div class="ex-stage" style="flex-direction:column; gap:6px; align-items:flex-start; padding-left:40px;">
+        <p style="font-size:28px; font-weight:700; color:#1a1612; line-height:1;">크기 28px 굵게</p>
+        <p style="font-size:20px; font-weight:400; color:#1a1612; line-height:1;">크기 20px 보통</p>
+        <p style="font-size:14px; font-weight:300; color:#5a5248; line-height:1;">크기 14px 얇게</p>
+        <p style="font-size:11px; font-weight:300; color:#5a5248; line-height:1; font-style:italic;">크기 11px 이탤릭</p>
+      </div>
+      <div class="ex-info">
+        <p class="ex-label">예제 02 — font-size &amp; font-weight</p>
+        <p class="ex-name">크기와 굵기 조합</p>
+        <p class="ex-desc">font-size는 텍스트 크기를 px, rem, em, % 등으로 지정합니다. font-weight는 100(극세)~900(극굵) 사이 값 또는 bold/normal 키워드를 사용합니다. 두 속성의 조합으로 시각적 계층 구조를 만듭니다.</p>
+        <div class="ex-code">font-size: 28px;
+font-weight: 700;   /* bold */
+
+font-size: 14px;
+font-weight: 300;   /* light */
+
+font-size: 11px;
+font-style: italic;</div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+
+<!-- ═══════════════════════════════════════
+     SECTION 2 — TEXT
+════════════════════════════════════════ -->
+<section id="text">
+  <div class="section-head">
+    <span class="section-num">02</span>
+    <h2>Text 속성</h2>
+    <p class="section-desc">정렬, 장식, 자간, 행간 등 텍스트 레이아웃 속성</p>
+  </div>
+
+  <!-- EX 03 -->
+  <div class="ex-card">
+    <div class="ex-top">
+      <div class="ex-stage" style="flex-direction:column; gap:10px; width:100%;">
+        <p style="font-size:13px; color:#1a1612; text-align:left; width:200px; border-left:2px solid #ccc; padding-left:10px;">text-align: left</p>
+        <p style="font-size:13px; color:#1a1612; text-align:center; width:200px;">text-align: center</p>
+        <p style="font-size:13px; color:#1a1612; text-align:right; width:200px; border-right:2px solid #1a1612; padding-right:10px;">text-align: right</p>
+      </div>
+      <div class="ex-info">
+        <p class="ex-label">예제 03 — text-align</p>
+        <p class="ex-name">텍스트 정렬</p>
+        <p class="ex-desc">text-align은 블록 요소 내 인라인 콘텐츠의 수평 정렬을 결정합니다. left(기본), center, right, justify(양쪽 정렬) 값을 지원합니다. 다국어 지원을 위해 start / end 논리값도 활용할 수 있습니다.</p>
+        <div class="ex-code">text-align: left;
+text-align: center;
+text-align: right;
+text-align: justify;</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EX 04 -->
+  <div class="ex-card">
+    <div class="ex-top">
+      <div class="ex-stage" style="flex-direction:column; gap:12px;">
+        <p style="font-size:15px; color:#1a1612; text-decoration:underline;">밑줄 텍스트 (underline)</p>
+        <p style="font-size:15px; color:#1a1612; text-decoration:line-through;">취소선 텍스트 (line-through)</p>
+        <p style="font-size:15px; color:#1a1612; letter-spacing:0.25em;">자 간 넓 은 텍 스 트</p>
+        <p style="font-size:15px; color:#1a1612; line-height:2.5; background:rgba(0,0,0,0.04); padding:4px 8px; border-radius:4px;">행간 넓은 텍스트<br>두 번째 줄</p>
+      </div>
+      <div class="ex-info">
+        <p class="ex-label">예제 04 — decoration / spacing</p>
+        <p class="ex-name">장식선 &amp; 간격</p>
+        <p class="ex-desc">text-decoration으로 밑줄, 취소선, 윗줄을 추가합니다. letter-spacing은 글자 사이 간격(자간)을, line-height는 줄 간격(행간)을 조절합니다. em 단위 사용 시 폰트 크기에 비례해 적용됩니다.</p>
+        <div class="ex-code">text-decoration: underline;
+text-decoration: line-through;
+
+letter-spacing: 0.25em;  /* 자간 */
+line-height: 2.5;         /* 행간 */</div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+
+<!-- ═══════════════════════════════════════
+     SECTION 3 — TEXT-SHADOW
+════════════════════════════════════════ -->
+<section id="shadow">
+  <div class="section-head">
+    <span class="section-num">03</span>
+    <h2>Text-Shadow</h2>
+    <p class="section-desc">X offset · Y offset · blur · color 4개 값으로 다양한 그림자 효과</p>
+  </div>
+
+  <!-- EX 05 -->
+  <div class="ex-card">
+    <div class="ex-top">
+      <div class="ex-stage" style="flex-direction:column; gap:18px; background:#1a1612;">
+        <p style="font-family:'Playfair Display',serif; font-size:1.8rem; font-weight:700; color:#ffffff; text-shadow: 0 0 20px #e05de0, 0 0 40px #7c6aff;">네온 글로우</p>
+        <p style="font-family:'Playfair Display',serif; font-size:1.8rem; font-weight:700; color:#f5f2ec; text-shadow: 3px 3px 0 #ff6a9a, 6px 6px 0 #7c6aff;">레이어드 그림자</p>
+        <p style="font-family:'Playfair Display',serif; font-size:1.8rem; font-weight:700; color:#1a1612; -webkit-text-stroke:1px rgba(255,255,255,0.3); text-shadow: 2px 4px 12px rgba(0,0,0,0.6);">드롭 쉐도우</p>
+      </div>
+      <div class="ex-info">
+        <p class="ex-label">예제 05 — text-shadow</p>
+        <p class="ex-name">텍스트 그림자 3가지 스타일</p>
+        <p class="ex-desc">text-shadow는 X축 이동, Y축 이동, 흐림 반경(blur), 색상 순서로 값을 지정합니다. 쉼표로 여러 그림자를 겹쳐 네온 글로우, 레이어드, 드롭 쉐도우 등 다양한 효과를 만들 수 있습니다.</p>
+        <div class="ex-code">/* 네온 글로우 */
+text-shadow:
+  0 0 20px #e05de0,
+  0 0 40px #7c6aff;
+
+/* 레이어드 */
+text-shadow:
+  3px 3px 0 #ff6a9a,
+  6px 6px 0 #7c6aff;
+
+/* 드롭 쉐도우 */
+text-shadow:
+  2px 4px 12px rgba(0,0,0,0.6);</div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+
+<!-- ═══════════════════════════════════════
+     SECTION 4 — DIRECTION
+════════════════════════════════════════ -->
+<section id="direction">
+  <div class="section-head">
+    <span class="section-num">04</span>
+    <h2>Direction</h2>
+    <p class="section-desc">텍스트 쓰기 방향 — LTR(좌→우) / RTL(우→좌)</p>
+  </div>
+
+  <!-- EX 06 -->
+  <div class="ex-card">
+    <div class="ex-top">
+      <div class="ex-stage" style="flex-direction:column; gap:24px; align-items:stretch; padding:32px;">
+        <div style="border-left:3px solid #2a7a4a; padding-left:14px;">
+          <p style="font-size:11px; font-family:'IBM Plex Mono',monospace; color:#5a5248; margin-bottom:4px;">direction: ltr (기본)</p>
+          <p style="font-size:16px; direction:ltr; color:#1a1612;">안녕하세요 Hello World →</p>
+        </div>
+        <div style="border-right:3px solid #c0392b; padding-right:14px; text-align:right;">
+          <p style="font-size:11px; font-family:'IBM Plex Mono',monospace; color:#5a5248; margin-bottom:4px;">direction: rtl</p>
+          <p style="font-size:16px; direction:rtl; unicode-bidi:bidi-override; color:#1a1612;">← مرحبا Hello</p>
+        </div>
+        <div style="border:1px solid rgba(26,22,18,0.1); border-radius:8px; padding:12px;">
+          <p style="font-size:11px; font-family:'IBM Plex Mono',monospace; color:#5a5248; margin-bottom:6px;">writing-mode: vertical-rl</p>
+          <p style="writing-mode:vertical-rl; font-size:15px; color:#1a1612; height:80px; display:inline-block; letter-spacing:0.1em;">세로쓰기 텍스트</p>
+        </div>
+      </div>
+      <div class="ex-info">
+        <p class="ex-label">예제 06 — direction &amp; writing-mode</p>
+        <p class="ex-name">텍스트 방향 제어</p>
+        <p class="ex-desc">direction 속성은 텍스트 흐름 방향을 지정합니다. ltr(Left-to-Right)은 한국어·영어 등 대부분 언어의 기본값이며, rtl(Right-to-Left)은 아랍어·히브리어 등에 사용됩니다. writing-mode로 세로쓰기도 구현할 수 있습니다.</p>
+        <div class="ex-code">/* 좌→우 (기본) */
+direction: ltr;
+
+/* 우→좌 (아랍어 등) */
+direction: rtl;
+unicode-bidi: bidi-override;
+
+/* 세로쓰기 */
+writing-mode: vertical-rl;
+letter-spacing: 0.1em;</div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+
+<!-- ═══════════════════════════════════════
+     SECTION 5 — TEXT-TRANSFORM
+════════════════════════════════════════ -->
+<section id="transform">
+  <div class="section-head">
+    <span class="section-num">05</span>
+    <h2>Text-Transform</h2>
+    <p class="section-desc">대소문자 변환 — uppercase / lowercase / capitalize</p>
+  </div>
+
+  <!-- EX 07 -->
+  <div class="ex-card">
+    <div class="ex-top">
+      <div class="ex-stage" style="flex-direction:column; gap:16px; align-items:flex-start; padding:32px 40px;">
+        <div>
+          <p style="font-size:10px; font-family:'IBM Plex Mono',monospace; color:#5a5248; margin-bottom:2px;">uppercase</p>
+          <p style="font-size:1.3rem; font-weight:700; text-transform:uppercase; letter-spacing:0.15em; color:#1a1612;">hello world css</p>
+        </div>
+        <div>
+          <p style="font-size:10px; font-family:'IBM Plex Mono',monospace; color:#5a5248; margin-bottom:2px;">lowercase</p>
+          <p style="font-size:1.3rem; font-weight:700; text-transform:lowercase; color:#1a1612;">HELLO WORLD CSS</p>
+        </div>
+        <div>
+          <p style="font-size:10px; font-family:'IBM Plex Mono',monospace; color:#5a5248; margin-bottom:2px;">capitalize</p>
+          <p style="font-size:1.3rem; font-weight:700; text-transform:capitalize; color:#1a1612;">hello world css</p>
+        </div>
+        <div>
+          <p style="font-size:10px; font-family:'IBM Plex Mono',monospace; color:#5a5248; margin-bottom:2px;">none (원본)</p>
+          <p style="font-size:1.3rem; font-weight:400; text-transform:none; color:#5a5248;">hElLo WoRLd CsS</p>
+        </div>
+      </div>
+      <div class="ex-info">
+        <p class="ex-label">예제 07 — text-transform</p>
+        <p class="ex-name">대소문자 자동 변환</p>
+        <p class="ex-desc">text-transform은 HTML 원본 텍스트를 수정하지 않고 시각적으로 대소문자를 변환합니다. uppercase는 모두 대문자, lowercase는 모두 소문자, capitalize는 각 단어의 첫 글자만 대문자로 만듭니다. 로고, 내비게이션, 레이블 등에 자주 활용됩니다.</p>
+        <div class="ex-code">/* 모두 대문자 */
+text-transform: uppercase;
+
+/* 모두 소문자 */
+text-transform: lowercase;
+
+/* 단어 첫 글자 대문자 */
+text-transform: capitalize;
+
+/* 변환 없음 (기본) */
+text-transform: none;</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EX 08 -->
+  <div class="ex-card">
+    <div class="ex-top">
+      <div class="ex-stage" style="flex-direction:column; gap:14px;">
+        <p style="font-size:1.5rem; font-weight:700; color:#1a1612; word-spacing:20px;">단어 간격 넓게</p>
+        <p style="font-size:1.1rem; font-weight:400; color:#1a1612; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:220px; border:1px dashed #ccc; padding:4px 8px;">긴 텍스트가 잘릴 때 말줄임표가 붙습니다...</p>
+        <p style="font-size:1.1rem; font-weight:700; color:#2a7a4a; font-variant:small-caps;">Small Caps 스타일</p>
+      </div>
+      <div class="ex-info">
+        <p class="ex-label">예제 08 — 추가 text 속성</p>
+        <p class="ex-name">word-spacing · overflow · font-variant</p>
+        <p class="ex-desc">word-spacing은 단어 간 간격을 조절합니다. text-overflow: ellipsis는 넘치는 텍스트를 말줄임(…)으로 처리하며 overflow: hidden, white-space: nowrap과 함께 사용해야 합니다. font-variant: small-caps는 소문자를 작은 대문자 형태로 표현합니다.</p>
+        <div class="ex-code">/* 단어 간격 */
+word-spacing: 20px;
+
+/* 말줄임표 */
+white-space: nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
+
+/* 스몰캡 */
+font-variant: small-caps;</div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+
+<!-- ═══════════════════════════════════════
+     SECTION 6 — COLOR (HEX 10개)
+════════════════════════════════════════ -->
+<section id="color">
+  <div class="section-head">
+    <span class="section-num">06</span>
+    <h2>16진수 색상 팔레트</h2>
+    <p class="section-desc">HEX 코드 10가지와 실전 사용법</p>
+  </div>
+
+  <!-- EX 09 — HEX color grid -->
+  <div class="ex-card" style="margin-bottom:24px;">
+    <div style="padding:28px 28px 20px;">
+      <p class="ex-label">예제 09 — HEX 색상 10가지</p>
+      <p class="ex-name" style="margin-bottom:8px;">16진수(Hex) 색상 코드란?</p>
+      <p class="ex-desc" style="max-width:680px;">CSS 색상을 #RRGGBB 형식의 16진수로 표현합니다. R(빨강) G(초록) B(파랑) 각 채널을 00~FF(0~255) 범위로 지정합니다. #RGB 3자리 단축 표기와 투명도를 포함한 #RRGGBBAA 8자리도 지원합니다.</p>
+    </div>
+    <div style="padding:0 28px 28px;">
+      <div class="color-grid">
+
+        <div class="color-card">
+          <div class="color-swatch" style="background:#1a1612;">
+            <span class="color-swatch-label">#1a1612</span>
+          </div>
+          <div class="color-info">
+            <p class="color-hex" style="color:#1a1612;">#1A1612</p>
+            <p class="color-name">잉크 블랙</p>
+            <p class="color-desc">R:26 G:22 B:18 — 순수 검정보다 따뜻한 느낌의 다크 베이스</p>
+          </div>
+        </div>
+
+        <div class="color-card">
+          <div class="color-swatch" style="background:#e63946;">
+            <span class="color-swatch-label">#e63946</span>
+          </div>
+          <div class="color-info">
+            <p class="color-hex" style="color:#c0392b;">#E63946</p>
+            <p class="color-name">임페리얼 레드</p>
+            <p class="color-desc">R:230 G:57 B:70 — 강렬한 주목도, 에러/경고 UI에 적합</p>
+          </div>
+        </div>
+
+        <div class="color-card">
+          <div class="color-swatch" style="background:#f4a261;">
+            <span class="color-swatch-label">#f4a261</span>
+          </div>
+          <div class="color-info">
+            <p class="color-hex" style="color:#b85c00;">#F4A261</p>
+            <p class="color-name">샌디 브라운</p>
+            <p class="color-desc">R:244 G:162 B:97 — 따뜻한 오렌지, CTA 버튼 등 강조에</p>
+          </div>
+        </div>
+
+        <div class="color-card">
+          <div class="color-swatch" style="background:#2a9d8f;">
+            <span class="color-swatch-label">#2a9d8f</span>
+          </div>
+          <div class="color-info">
+            <p class="color-hex" style="color:#1a6b60;">#2A9D8F</p>
+            <p class="color-name">페르시안 그린</p>
+            <p class="color-desc">R:42 G:157 B:143 — 성공·완료 상태, 자연 친화 브랜드</p>
+          </div>
+        </div>
+
+        <div class="color-card">
+          <div class="color-swatch" style="background:#264653;">
+            <span class="color-swatch-label">#264653</span>
+          </div>
+          <div class="color-info">
+            <p class="color-hex" style="color:#264653;">#264653</p>
+            <p class="color-name">차콜 블루</p>
+            <p class="color-desc">R:38 G:70 B:83 — 전문적이고 안정감 있는 다크 블루</p>
+          </div>
+        </div>
+
+        <div class="color-card">
+          <div class="color-swatch" style="background:#6d6875;">
+            <span class="color-swatch-label">#6d6875</span>
+          </div>
+          <div class="color-info">
+            <p class="color-hex" style="color:#4a4055;">#6D6875</p>
+            <p class="color-name">퀄티드 라벤더</p>
+            <p class="color-desc">R:109 G:104 B:117 — 세련된 보라계 뉴트럴, 서브텍스트</p>
+          </div>
+        </div>
+
+        <div class="color-card">
+          <div class="color-swatch" style="background:#f5f2ec;">
+            <span class="color-swatch-label" style="background:rgba(0,0,0,0.15);">#f5f2ec</span>
+          </div>
+          <div class="color-info">
+            <p class="color-hex" style="color:#5a5248;">#F5F2EC</p>
+            <p class="color-name">웜 화이트</p>
+            <p class="color-desc">R:245 G:242 B:236 — 순백보다 눈에 편한 따뜻한 배경색</p>
+          </div>
+        </div>
+
+        <div class="color-card">
+          <div class="color-swatch" style="background:#e9c46a;">
+            <span class="color-swatch-label">#e9c46a</span>
+          </div>
+          <div class="color-info">
+            <p class="color-hex" style="color:#8a6800;">#E9C46A</p>
+            <p class="color-name">맥시멈 옐로우</p>
+            <p class="color-desc">R:233 G:196 B:106 — 경고·주의 상태, 골드 강조색</p>
+          </div>
+        </div>
+
+        <div class="color-card">
+          <div class="color-swatch" style="background:#c77dff;">
+            <span class="color-swatch-label">#c77dff</span>
+          </div>
+          <div class="color-info">
+            <p class="color-hex" style="color:#7b00d4;">#C77DFF</p>
+            <p class="color-name">라일락 퍼플</p>
+            <p class="color-desc">R:199 G:125 B:255 — 크리에이티브·테크 브랜드 강조</p>
+          </div>
+        </div>
+
+        <div class="color-card">
+          <div class="color-swatch" style="background:#06d6a0;">
+            <span class="color-swatch-label">#06d6a0</span>
+          </div>
+          <div class="color-info">
+            <p class="color-hex" style="color:#007a58;">#06D6A0</p>
+            <p class="color-name">민트 그린</p>
+            <p class="color-desc">R:6 G:214 B:160 — 신선하고 현대적인 액센트, 링크색</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- EX 10 -->
+  <div class="ex-card">
+    <div class="ex-top">
+      <div class="ex-stage" style="flex-direction:column; gap:16px; align-items:stretch; padding:28px;">
+        <div style="display:flex; align-items:center; gap:16px;">
+          <div style="width:44px;height:44px;border-radius:50%;background:#e63946;flex-shrink:0;"></div>
+          <div>
+            <p style="font-size:12px;color:#5a5248;font-family:'IBM Plex Mono',monospace;">color: #e63946</p>
+            <p style="font-size:1rem;font-weight:500;color:#e63946;">에러 메시지 텍스트</p>
+          </div>
+        </div>
+        <div style="display:flex; align-items:center; gap:16px;">
+          <div style="width:44px;height:44px;border-radius:50%;background:#2a9d8f;flex-shrink:0;"></div>
+          <div>
+            <p style="font-size:12px;color:#5a5248;font-family:'IBM Plex Mono',monospace;">color: #2a9d8f</p>
+            <p style="font-size:1rem;font-weight:500;color:#2a9d8f;">성공 메시지 텍스트</p>
+          </div>
+        </div>
+        <div style="display:flex; align-items:center; gap:16px;">
+          <div style="width:44px;height:44px;border-radius:50%;background:#e9c46a;flex-shrink:0;"></div>
+          <div>
+            <p style="font-size:12px;color:#5a5248;font-family:'IBM Plex Mono',monospace;">color: #e9c46a</p>
+            <p style="font-size:1rem;font-weight:500;color:#8a6800;">경고 메시지 텍스트</p>
+          </div>
+        </div>
+      </div>
+      <div class="ex-info">
+        <p class="ex-label">예제 10 — color 속성 실전 적용</p>
+        <p class="ex-name">시맨틱 색상 시스템</p>
+        <p class="ex-desc">color 속성은 텍스트 색상을 지정합니다. HEX 외에도 rgb(), hsl(), 색상명 키워드를 사용할 수 있습니다. 의미 있는 색상 시스템(에러=빨강, 성공=초록, 경고=노랑)을 CSS 변수로 관리하면 일관성 있는 UI를 유지할 수 있습니다.</p>
+        <div class="ex-code">:root {
+  --c-error:   #e63946;
+  --c-success: #2a9d8f;
+  --c-warning: #e9c46a;
+  --c-purple:  #c77dff;
+  --c-mint:    #06d6a0;
+}
+
+.error   { color: var(--c-error); }
+.success { color: var(--c-success); }
+.warning { color: var(--c-warning); }</div>
+      </div>
+    </div>
+  </div>
+
+</section>
+</div><!-- /page -->
+
+<footer>
+  &lt;/css-typography-color-reference&gt; — 순수 HTML &amp; CSS3 · 외부 JS 없음
+</footer>
+
+</body>
+</html>
