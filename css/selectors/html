@@ -1,1 +1,703 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSS3 선택자 완전 가이드</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Noto+Sans+KR:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+  :root {
+    --bg: #0a0a0f;
+    --surface: #12121a;
+    --surface2: #1a1a26;
+    --border: rgba(255,255,255,0.07);
+    --accent1: #7c6aff;
+    --accent2: #ff6a9a;
+    --accent3: #6affdb;
+    --accent4: #ffb86a;
+    --accent5: #6ab4ff;
+    --accent6: #c6ff6a;
+    --text: #e8e6f0;
+    --muted: #7a788a;
+    --code-bg: #0d0d15;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Noto Sans KR', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-weight: 300;
+    line-height: 1.7;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* grid background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(124,106,255,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(124,106,255,0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* header */
+  header {
+    position: relative;
+    z-index: 1;
+    padding: 80px 40px 60px;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .header-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    color: var(--accent1);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.1s forwards;
+  }
+
+  header h1 {
+    font-size: clamp(2.2rem, 5vw, 3.8rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin-bottom: 16px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.25s forwards;
+  }
+
+  .gradient-text {
+    background: linear-gradient(135deg, var(--accent1) 0%, var(--accent2) 50%, var(--accent3) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  header p {
+    font-size: 1rem;
+    color: var(--muted);
+    max-width: 500px;
+    margin: 0 auto;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.4s forwards;
+  }
+
+  /* nav pills */
+  .nav-pills {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    padding: 24px 40px;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    background: rgba(10,10,15,0.92);
+    backdrop-filter: blur(16px);
+    z-index: 100;
+  }
+
+  .pill {
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 6px 14px;
+    border-radius: 100px;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    text-decoration: none;
+    transition: all 0.2s ease;
+    cursor: pointer;
+  }
+  .pill:hover { color: var(--text); border-color: rgba(255,255,255,0.2); background: var(--surface); }
+  .pill[data-color="1"] { --pc: var(--accent1); }
+  .pill[data-color="2"] { --pc: var(--accent2); }
+  .pill[data-color="3"] { --pc: var(--accent3); }
+  .pill[data-color="4"] { --pc: var(--accent4); }
+  .pill[data-color="5"] { --pc: var(--accent5); }
+  .pill[data-color="6"] { --pc: var(--accent6); }
+  .pill:hover { color: var(--pc); border-color: var(--pc); }
+
+  /* main */
+  main {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 60px 24px 120px;
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+  }
+
+  /* selector card */
+  .selector-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: box-shadow 0.3s ease;
+    animation: cardReveal 0.5s ease forwards;
+  }
+  .selector-card:nth-child(1) { animation-delay: 0.1s; }
+  .selector-card:nth-child(2) { animation-delay: 0.2s; }
+  .selector-card:nth-child(3) { animation-delay: 0.3s; }
+  .selector-card:nth-child(4) { animation-delay: 0.4s; }
+  .selector-card:nth-child(5) { animation-delay: 0.5s; }
+  .selector-card:nth-child(6) { animation-delay: 0.6s; }
+
+  .selector-card:hover { box-shadow: 0 0 40px rgba(124,106,255,0.08); }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 24px 28px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .card-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 700;
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .card-title-group { flex: 1; }
+
+  .card-title {
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-bottom: 2px;
+  }
+
+  .card-subtitle {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .card-badge {
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 4px 10px;
+    border-radius: 100px;
+    border: 1px solid;
+    letter-spacing: 0.05em;
+  }
+
+  .card-body {
+    padding: 24px 28px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  @media (max-width: 600px) {
+    .card-body { grid-template-columns: 1fr; }
+  }
+
+  .desc-section h3 {
+    font-size: 11px;
+    font-family: var(--mono);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+
+  .desc-section p {
+    font-size: 0.9rem;
+    color: #b8b6c8;
+    line-height: 1.7;
+  }
+
+  .syntax-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .syntax-list li {
+    font-family: var(--mono);
+    font-size: 12px;
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 8px 12px;
+    color: #c8d0ff;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .syntax-list li::before {
+    content: '›';
+    color: var(--muted);
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+
+  /* demo area */
+  .demo-area {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    position: relative;
+  }
+
+  .demo-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .demo-label::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent3);
+    display: inline-block;
+  }
+
+  /* card color themes */
+  .card-1 .card-num { background: rgba(124,106,255,0.15); color: var(--accent1); }
+  .card-1 .card-badge { color: var(--accent1); border-color: rgba(124,106,255,0.3); background: rgba(124,106,255,0.08); }
+  .card-1 .card-header { border-bottom-color: rgba(124,106,255,0.15); }
+
+  .card-2 .card-num { background: rgba(255,106,154,0.15); color: var(--accent2); }
+  .card-2 .card-badge { color: var(--accent2); border-color: rgba(255,106,154,0.3); background: rgba(255,106,154,0.08); }
+  .card-2 .card-header { border-bottom-color: rgba(255,106,154,0.15); }
+
+  .card-3 .card-num { background: rgba(106,255,219,0.12); color: var(--accent3); }
+  .card-3 .card-badge { color: var(--accent3); border-color: rgba(106,255,219,0.3); background: rgba(106,255,219,0.08); }
+  .card-3 .card-header { border-bottom-color: rgba(106,255,219,0.15); }
+
+  .card-4 .card-num { background: rgba(255,184,106,0.15); color: var(--accent4); }
+  .card-4 .card-badge { color: var(--accent4); border-color: rgba(255,184,106,0.3); background: rgba(255,184,106,0.08); }
+  .card-4 .card-header { border-bottom-color: rgba(255,184,106,0.15); }
+
+  .card-5 .card-num { background: rgba(106,180,255,0.15); color: var(--accent5); }
+  .card-5 .card-badge { color: var(--accent5); border-color: rgba(106,180,255,0.3); background: rgba(106,180,255,0.08); }
+  .card-5 .card-header { border-bottom-color: rgba(106,180,255,0.15); }
+
+  .card-6 .card-num { background: rgba(198,255,106,0.12); color: var(--accent6); }
+  .card-6 .card-badge { color: var(--accent6); border-color: rgba(198,255,106,0.3); background: rgba(198,255,106,0.08); }
+  .card-6 .card-header { border-bottom-color: rgba(198,255,106,0.15); }
+
+  /* DEMO 1: attribute selector */
+  .demo1-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+  .demo1-grid a {
+    font-size: 12px; padding: 5px 12px; border-radius: 6px;
+    border: 1px solid var(--border); color: var(--muted); text-decoration: none;
+    transition: all 0.2s;
+  }
+  .demo1-grid a[href^="https"] { border-color: rgba(124,106,255,0.5); color: var(--accent1); background: rgba(124,106,255,0.08); }
+  .demo1-grid a[href^="mailto"] { border-color: rgba(255,106,154,0.5); color: var(--accent2); background: rgba(255,106,154,0.08); }
+  .demo1-grid a[href$=".pdf"] { border-color: rgba(255,184,106,0.5); color: var(--accent4); background: rgba(255,184,106,0.08); }
+
+  /* DEMO 2: pseudo-class */
+  .demo2-list { list-style: none; }
+  .demo2-list li {
+    font-size: 13px; padding: 8px 12px;
+    border-bottom: 1px solid var(--border);
+    color: var(--muted); font-family: var(--mono);
+    transition: background 0.2s;
+  }
+  .demo2-list li:first-child { color: var(--accent2); border-left: 2px solid var(--accent2); padding-left: 10px; font-weight: 700; }
+  .demo2-list li:last-child { border-bottom: none; color: var(--accent2); opacity: 0.6; }
+  .demo2-list li:nth-child(even) { background: rgba(255,255,255,0.02); }
+  .demo2-list li:hover { background: rgba(255,106,154,0.05); color: var(--text); cursor: default; }
+
+  /* DEMO 3: pseudo-element */
+  .demo3-quote {
+    position: relative;
+    font-size: 13px;
+    color: #b8b6c8;
+    padding: 12px 16px 12px 44px;
+    line-height: 1.7;
+  }
+  .demo3-quote::before {
+    content: '"';
+    position: absolute;
+    left: 10px;
+    top: 4px;
+    font-size: 3rem;
+    color: var(--accent3);
+    line-height: 1;
+    font-family: Georgia, serif;
+    opacity: 0.6;
+  }
+  .demo3-item::first-letter {
+    float: left;
+    font-size: 2.8rem;
+    font-weight: 700;
+    line-height: 0.8;
+    margin-right: 6px;
+    color: var(--accent3);
+    padding-top: 4px;
+  }
+  .demo3-item {
+    font-size: 13px; color: #b8b6c8; line-height: 1.7;
+    margin-top: 10px; clear: both;
+  }
+
+  /* DEMO 4: combinators */
+  .demo4-box { font-size: 12px; }
+  .demo4-box .parent { color: var(--muted); margin-bottom: 6px; font-family: var(--mono); }
+  .demo4-box .parent > .direct-child {
+    color: var(--accent4); margin-left: 16px; font-family: var(--mono);
+    border-left: 2px solid var(--accent4); padding-left: 10px; margin-bottom: 4px;
+  }
+  .demo4-box .parent .deep { color: var(--muted); margin-left: 32px; font-family: var(--mono); font-size: 11px; }
+  .demo4-box .sibling-demo { margin-top: 12px; }
+  .demo4-box .item { display: inline-block; padding: 4px 10px; border-radius: 4px; font-family: var(--mono); font-size: 11px; border: 1px solid var(--border); color: var(--muted); margin-right: 4px; }
+  .demo4-box .item.active { color: var(--accent4); border-color: rgba(255,184,106,0.4); }
+  .demo4-box .item.active ~ .item { color: var(--accent4); background: rgba(255,184,106,0.06); border-color: rgba(255,184,106,0.25); }
+
+  /* DEMO 5: :is() :not() :has() */
+  .demo5-form input, .demo5-form select {
+    width: 100%; background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border); border-radius: 6px;
+    padding: 8px 12px; color: var(--text); font-family: var(--mono); font-size: 12px;
+    margin-bottom: 8px; outline: none;
+    transition: border-color 0.2s;
+  }
+  .demo5-form :is(input, select):focus { border-color: var(--accent5); }
+  .demo5-form input:not([type="submit"]):not(:placeholder-shown) { border-color: rgba(106,180,255,0.4); }
+  .demo5-note { font-size: 11px; color: var(--muted); font-family: var(--mono); margin-top: 6px; }
+  .demo5-note span { color: var(--accent5); }
+
+  /* DEMO 6: :root vars + calc */
+  .demo6-colors { display: flex; gap: 8px; flex-wrap: wrap; }
+  .demo6-swatch {
+    width: 40px; height: 40px; border-radius: 8px;
+    border: 1px solid var(--border);
+    transition: transform 0.2s;
+    cursor: default;
+  }
+  .demo6-swatch:hover { transform: scale(1.1); }
+  .demo6-spacing { margin-top: 14px; display: flex; flex-direction: column; gap: 6px; }
+  .demo6-bar {
+    height: 8px; border-radius: 100px;
+    background: linear-gradient(90deg, var(--accent6), transparent);
+    opacity: 0.6;
+  }
+
+  /* footer */
+  footer {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 40px 24px;
+    border-top: 1px solid var(--border);
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+  }
+
+  /* animations */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes cardReveal {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--surface2); border-radius: 100px; }
+</style>
+</head>
+<body>
+
+<header>
+  <p class="header-label">// HTML &amp; CSS3 reference</p>
+  <h1><span class="gradient-text">CSS3 선택자</span><br>완전 가이드</h1>
+  <p>6가지 핵심 선택자 유형 — 개념부터 실전 예제까지</p>
+</header>
+
+<nav class="nav-pills" aria-label="섹션 이동">
+  <a class="pill" data-color="1" href="#s1">① 속성 선택자</a>
+  <a class="pill" data-color="2" href="#s2">② 가상 클래스</a>
+  <a class="pill" data-color="3" href="#s3">③ 가상 요소</a>
+  <a class="pill" data-color="4" href="#s4">④ 결합자</a>
+  <a class="pill" data-color="5" href="#s5">⑤ 논리 선택자</a>
+  <a class="pill" data-color="6" href="#s6">⑥ :root &amp; 변수</a>
+</nav>
+
+<main>
+
+  <!-- 1. 속성 선택자 -->
+  <article class="selector-card card-1" id="s1">
+    <div class="card-header">
+      <div class="card-num">01</div>
+      <div class="card-title-group">
+        <div class="card-title">속성 선택자 (Attribute Selector)</div>
+        <div class="card-subtitle">[attr], [attr^=], [attr$=], [attr*=]</div>
+      </div>
+      <span class="card-badge">CSS2.1 / 3</span>
+    </div>
+    <div class="card-body">
+      <div class="desc-section">
+        <h3>설명</h3>
+        <p>HTML 요소의 속성값을 기준으로 선택합니다. 값이 특정 문자로 <strong>시작</strong>(<code>^=</code>), <strong>끝나거나</strong>(<code>$=</code>), <strong>포함</strong>(<code>*=</code>)하는 요소를 정밀하게 타겟팅할 수 있어 클래스 없이도 스타일링이 가능합니다.</p>
+        <ul class="syntax-list">
+          <li>[href^="https"]  — https로 시작</li>
+          <li>[href$=".pdf"]   — .pdf로 끝남</li>
+          <li>[href*="github"] — github 포함</li>
+          <li>[type="email"]   — 정확히 일치</li>
+        </ul>
+      </div>
+      <div class="desc-section">
+        <div class="demo-area">
+          <div class="demo-label">live demo</div>
+          <div class="demo1-grid">
+            <a href="https://example.com">외부 링크</a>
+            <a href="mailto:hi@mail.com">이메일</a>
+            <a href="doc.pdf">PDF 파일</a>
+            <a href="/page">내부 링크</a>
+            <a href="https://shop.com">쇼핑몰</a>
+          </div>
+          <p style="font-size:11px;color:var(--muted);margin-top:12px;font-family:var(--mono);">* href 속성값에 따라 자동으로 색상 분류</p>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- 2. 가상 클래스 -->
+  <article class="selector-card card-2" id="s2">
+    <div class="card-header">
+      <div class="card-num">02</div>
+      <div class="card-title-group">
+        <div class="card-title">가상 클래스 (Pseudo-class)</div>
+        <div class="card-subtitle">:hover, :nth-child(), :first-child, :focus...</div>
+      </div>
+      <span class="card-badge">CSS3</span>
+    </div>
+    <div class="card-body">
+      <div class="desc-section">
+        <h3>설명</h3>
+        <p>요소의 <strong>상태</strong>나 <strong>위치</strong>를 기반으로 스타일을 적용합니다. 사용자 인터랙션(:hover, :focus)이나 DOM 내 순서(:nth-child, :last-child)를 활용해 JS 없이도 동적인 UI를 구현할 수 있습니다.</p>
+        <ul class="syntax-list">
+          <li>li:first-child    — 첫 번째 자식</li>
+          <li>li:nth-child(2n) — 짝수 번째</li>
+          <li>a:hover          — 마우스 오버</li>
+          <li>input:focus      — 포커스 상태</li>
+        </ul>
+      </div>
+      <div class="desc-section">
+        <div class="demo-area">
+          <div class="demo-label">live demo — 항목에 hover 해보세요</div>
+          <ul class="demo2-list">
+            <li>첫 번째 항목 ← :first-child</li>
+            <li>두 번째 항목 (짝수)</li>
+            <li>세 번째 항목</li>
+            <li>네 번째 항목 (짝수)</li>
+            <li>다섯 번째 항목 ← :last-child</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- 3. 가상 요소 -->
+  <article class="selector-card card-3" id="s3">
+    <div class="card-header">
+      <div class="card-num">03</div>
+      <div class="card-title-group">
+        <div class="card-title">가상 요소 (Pseudo-element)</div>
+        <div class="card-subtitle">::before, ::after, ::first-letter, ::selection</div>
+      </div>
+      <span class="card-badge">CSS3</span>
+    </div>
+    <div class="card-body">
+      <div class="desc-section">
+        <h3>설명</h3>
+        <p>HTML을 수정하지 않고 요소의 <strong>일부분</strong>에 스타일을 추가합니다. <code>::before</code>/<code>::after</code>로 장식 콘텐츠를 삽입하거나, <code>::first-letter</code>로 드롭캡 효과를, <code>::selection</code>으로 텍스트 선택 스타일을 커스터마이징할 수 있습니다.</p>
+        <ul class="syntax-list">
+          <li>::before / ::after   — 콘텐츠 삽입</li>
+          <li>::first-letter       — 첫 글자</li>
+          <li>::first-line         — 첫 줄</li>
+          <li>::selection          — 선택된 텍스트</li>
+        </ul>
+      </div>
+      <div class="desc-section">
+        <div class="demo-area">
+          <div class="demo-label">live demo</div>
+          <div class="demo3-quote">CSS는 웹의 시각적 언어입니다. 선택자를 마스터하면 모든 요소를 자유롭게 스타일링할 수 있습니다.</div>
+          <p class="demo3-item">가상 요소를 활용하면 HTML 마크업 없이 풍부한 타이포그래피 효과를 구현할 수 있습니다. 첫 글자에 자동으로 스타일이 적용됩니다.</p>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- 4. 결합자 -->
+  <article class="selector-card card-4" id="s4">
+    <div class="card-header">
+      <div class="card-num">04</div>
+      <div class="card-title-group">
+        <div class="card-title">결합자 (Combinators)</div>
+        <div class="card-subtitle">자손(␣), 자식(&gt;), 인접(+), 일반 형제(~)</div>
+      </div>
+      <span class="card-badge">CSS2 / 3</span>
+    </div>
+    <div class="card-body">
+      <div class="desc-section">
+        <h3>설명</h3>
+        <p>두 선택자의 <strong>DOM 관계</strong>를 이용해 타겟을 좁힙니다. 자식 선택자(<code>&gt;</code>)는 직접 자식만, 형제 선택자(<code>~</code>)는 뒤에 오는 모든 형제를, 인접 형제(<code>+</code>)는 바로 다음 형제만 선택합니다.</p>
+        <ul class="syntax-list">
+          <li>div p        — 모든 자손 p</li>
+          <li>div &gt; p   — 직접 자식 p만</li>
+          <li>h2 + p       — 바로 다음 형제</li>
+          <li>h2 ~ p       — 이후 모든 형제</li>
+        </ul>
+      </div>
+      <div class="desc-section">
+        <div class="demo-area">
+          <div class="demo-label">live demo — 자식 vs 자손 &amp; 형제</div>
+          <div class="demo4-box">
+            <div class="parent">.parent
+              <div class="direct-child">▸ .direct-child (직접 자식 &gt;)</div>
+              <div class="deep" style="display:none">깊은 자손 (자식 아님)</div>
+            </div>
+            <div class="sibling-demo">
+              <span class="item">A</span>
+              <span class="item active">B (active)</span>
+              <span class="item">C</span>
+              <span class="item">D</span>
+              <span class="item">E</span>
+            </div>
+            <p style="font-size:11px;color:var(--muted);margin-top:8px;font-family:var(--mono);">B 이후 형제 C D E → .active ~ .item 적용</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- 5. 논리 선택자 -->
+  <article class="selector-card card-5" id="s5">
+    <div class="card-header">
+      <div class="card-num">05</div>
+      <div class="card-title-group">
+        <div class="card-title">논리 선택자 (Logical Selectors)</div>
+        <div class="card-subtitle">:is(), :not(), :has(), :where()</div>
+      </div>
+      <span class="card-badge">CSS4 / Modern</span>
+    </div>
+    <div class="card-body">
+      <div class="desc-section">
+        <h3>설명</h3>
+        <p>CSS4에서 도입된 강력한 논리 선택자들입니다. <code>:is()</code>로 여러 선택자를 묶고, <code>:not()</code>으로 제외하며, <code>:has()</code>로 자식을 기준으로 부모를 선택하는 "부모 선택자"가 가능해졌습니다.</p>
+        <ul class="syntax-list">
+          <li>:is(h1, h2, h3)  — 그룹 선택</li>
+          <li>:not(.disabled)  — 제외</li>
+          <li>div:has(img)     — img가 있는 div</li>
+          <li>:where(.nav a)   — 명시도 0</li>
+        </ul>
+      </div>
+      <div class="desc-section">
+        <div class="demo-area">
+          <div class="demo-label">live demo — :is() + :not() 폼</div>
+          <div class="demo5-form">
+            <input type="text" placeholder="이름 입력..." />
+            <input type="email" placeholder="이메일 입력..." />
+            <select>
+              <option>직군 선택</option>
+              <option>프론트엔드</option>
+              <option>백엔드</option>
+            </select>
+          </div>
+          <p class="demo5-note">:is(input, select):focus → <span>파란 테두리</span> 적용</p>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- 6. :root 변수 -->
+  <article class="selector-card card-6" id="s6">
+    <div class="card-header">
+      <div class="card-num">06</div>
+      <div class="card-title-group">
+        <div class="card-title">:root &amp; CSS 커스텀 속성</div>
+        <div class="card-subtitle">var(), calc(), :root 전역 변수</div>
+      </div>
+      <span class="card-badge">CSS3+</span>
+    </div>
+    <div class="card-body">
+      <div class="desc-section">
+        <h3>설명</h3>
+        <p><code>:root</code>는 문서 최상위 요소를 선택해 전역 CSS 변수 선언에 사용됩니다. <code>var()</code>로 재사용하고 <code>calc()</code>로 동적 계산을 구현해, 테마 시스템과 반응형 디자인의 핵심 도구가 됩니다.</p>
+        <ul class="syntax-list">
+          <li>:root { --color: #fff; }  — 변수 선언</li>
+          <li>color: var(--color)       — 변수 사용</li>
+          <li>width: calc(100% - 2rem) — 계산</li>
+          <li>var(--size, 16px)         — 폴백값</li>
+        </ul>
+      </div>
+      <div class="desc-section">
+        <div class="demo-area">
+          <div class="demo-label">live demo — :root 변수 팔레트</div>
+          <div class="demo6-colors">
+            <div class="demo6-swatch" style="background:#7c6aff;" title="--accent1"></div>
+            <div class="demo6-swatch" style="background:#ff6a9a;" title="--accent2"></div>
+            <div class="demo6-swatch" style="background:#6affdb;" title="--accent3"></div>
+            <div class="demo6-swatch" style="background:#ffb86a;" title="--accent4"></div>
+            <div class="demo6-swatch" style="background:#6ab4ff;" title="--accent5"></div>
+            <div class="demo6-swatch" style="background:#c6ff6a;" title="--accent6"></div>
+          </div>
+          <div class="demo6-spacing">
+            <div class="demo6-bar" style="width: calc(1 * 60px);"></div>
+            <div class="demo6-bar" style="width: calc(2 * 60px);"></div>
+            <div class="demo6-bar" style="width: calc(3 * 60px); opacity:0.8;"></div>
+            <div class="demo6-bar" style="width: calc(4 * 60px); opacity:0.6;"></div>
+          </div>
+          <p style="font-size:11px;color:var(--muted);margin-top:10px;font-family:var(--mono);">calc(N * --base-unit) 간격 시스템 시각화</p>
+        </div>
+      </div>
+    </div>
+  </article>
+
+</main>
+
+<footer>
+  &lt;/css3-selectors&gt; — 모든 예제는 순수 HTML &amp; CSS3로 구현
+</footer>
+
+</body>
+</html>
