@@ -3,503 +3,243 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Block & Inline 요소 시각화</title>
+  <title>CSS Position</title>
   <style>
-    :root {
-      --bg: #0f1117;
-      --surface: #1a1d27;
-      --card: #21263a;
-      --border: #2e3450;
-      --block-color: #4f6ef7;
-      --block-light: rgba(79, 110, 247, 0.12);
-      --block-border: rgba(79, 110, 247, 0.5);
-      --inline-color: #f7874f;
-      --inline-light: rgba(247, 135, 79, 0.12);
-      --inline-border: rgba(247, 135, 79, 0.5);
-      --text: #e8eaf2;
-      --muted: #7c84a3;
-      --mono: 'JetBrains Mono', 'Fira Code', monospace;
-      --sans: 'Pretendard', 'Noto Sans KR', system-ui, sans-serif;
-    }
-
     * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: sans-serif; background: #f0f0f0; color: #222; }
 
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--sans);
-      line-height: 1.7;
-      min-height: 100vh;
-    }
-
-    /* ── Header ── */
-    header {
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
-      padding: 2.5rem 2rem 2rem;
-      text-align: center;
-    }
-
-    header h1 {
-      font-size: clamp(1.6rem, 4vw, 2.6rem);
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      margin-bottom: 0.5rem;
-    }
-
-    .badge-block { color: var(--block-color); }
-    .badge-inline { color: var(--inline-color); }
-
-    header p {
-      color: var(--muted);
+    /* ── 상단 고정 헤더 (sticky 데모 겸용) ── */
+    #top-bar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      background: #1a1a2e;
+      color: #fff;
+      padding: 0.7rem 1.5rem;
       font-size: 0.95rem;
-      max-width: 560px;
-      margin: 0 auto;
-    }
-
-    /* ── Layout ── */
-    main {
-      max-width: 960px;
-      margin: 0 auto;
-      padding: 3rem 1.5rem;
-      display: grid;
-      gap: 2.5rem;
-    }
-
-    /* ── Section card ── */
-    .section-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      overflow: hidden;
-    }
-
-    .section-header {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      padding: 1.25rem 1.5rem;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .dot {
-      width: 12px; height: 12px;
-      border-radius: 50%;
-      flex-shrink: 0;
-    }
-    .dot-block { background: var(--block-color); }
-    .dot-inline { background: var(--inline-color); }
-
-    .section-header h2 {
-      font-size: 1rem;
       font-weight: 700;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
+      z-index: 100;
     }
+    #top-bar span { font-size: 0.75rem; font-weight: 400; opacity: 0.7; margin-left: 0.6rem; }
 
-    .section-header .tag {
-      margin-left: auto;
-      font-family: var(--mono);
-      font-size: 0.72rem;
-      padding: 0.2rem 0.6rem;
-      border-radius: 6px;
-    }
-    .tag-block { background: var(--block-light); color: var(--block-color); border: 1px solid var(--block-border); }
-    .tag-inline { background: var(--inline-light); color: var(--inline-color); border: 1px solid var(--inline-border); }
+    main { max-width: 760px; margin: 0 auto; padding: 4.5rem 1.2rem 3rem; }
 
-    .section-body { padding: 1.5rem; }
+    h1   { font-size: 1.5rem; margin-bottom: 0.3rem; }
+    .sub { color: #666; font-size: 0.85rem; margin-bottom: 2rem; }
 
-    /* ── Explanation grid ── */
-    .explain-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-      margin-bottom: 1.5rem;
-    }
-    @media (max-width: 560px) { .explain-grid { grid-template-columns: 1fr; } }
-
-    .explain-item {
-      background: var(--card);
-      border-radius: 10px;
-      padding: 1rem 1.1rem;
-      border: 1px solid var(--border);
-    }
-
-    .explain-item dt {
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--muted);
-      margin-bottom: 0.3rem;
-    }
-    .explain-item dd {
-      font-size: 0.88rem;
-      color: var(--text);
-    }
-
-    /* ── Demo area ── */
-    .demo-label {
-      font-size: 0.72rem;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--muted);
-      margin-bottom: 0.6rem;
-    }
-
-    .demo-box {
-      background: var(--card);
-      border: 1px solid var(--border);
+    /* ── 섹션 카드 ── */
+    .card {
+      background: #fff;
       border-radius: 10px;
       padding: 1.2rem 1.4rem;
-      font-size: 0.9rem;
+      margin-bottom: 2rem;
+      border: 1px solid #ddd;
     }
-
-    /* block elements inside demo */
-    .demo-div {
-      background: var(--block-light);
-      border: 1.5px dashed var(--block-border);
-      border-radius: 6px;
-      padding: 0.5rem 0.8rem;
-      margin: 0.4rem 0;
-      font-family: var(--mono);
-      font-size: 0.8rem;
-      color: #a8baff;
-      position: relative;
-    }
-    .demo-div::before {
-      content: attr(data-tag);
-      position: absolute;
-      top: -0.55rem; left: 0.6rem;
-      background: var(--card);
-      padding: 0 0.3rem;
-      font-size: 0.65rem;
-      color: var(--block-color);
-      font-weight: 700;
-      letter-spacing: 0.06em;
-    }
-
-    /* inline elements inside demo */
-    .demo-inline-wrap {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 1rem 1.2rem;
-      font-size: 0.9rem;
-      line-height: 2;
-    }
-    .demo-inline-wrap .il {
-      background: var(--inline-light);
-      border: 1.5px dashed var(--inline-border);
-      border-radius: 4px;
-      padding: 0.1rem 0.45rem;
-      font-family: var(--mono);
-      font-size: 0.78rem;
-      color: #ffc49e;
-    }
-
-    /* ── Code snippet ── */
-    .code-wrap {
-      margin-top: 1.2rem;
-    }
-    pre {
-      background: #0a0c14;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 1.1rem 1.3rem;
-      overflow-x: auto;
-      font-family: var(--mono);
-      font-size: 0.78rem;
-      line-height: 1.9;
-    }
-    .kw  { color: #c792ea; }
-    .attr{ color: #80cbc4; }
-    .val { color: #c3e88d; }
-    .tag { color: #89ddff; }
-    .cmt { color: #546e7a; font-style: italic; }
-    .bl  { color: #a8baff; }
-    .il  { color: #ffc49e; }
-
-    /* ── Comparison table ── */
-    .compare-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      overflow: hidden;
-    }
-    .compare-card h2 {
-      padding: 1.25rem 1.5rem;
-      border-bottom: 1px solid var(--border);
+    .card h2 {
       font-size: 1rem;
+      margin-bottom: 0.3rem;
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .badge {
+      font-family: monospace;
+      font-size: 0.72rem;
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
       font-weight: 700;
     }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.86rem;
-    }
-    thead th {
-      background: var(--card);
-      padding: 0.75rem 1.2rem;
-      text-align: left;
-      font-weight: 700;
-      letter-spacing: 0.03em;
-      color: var(--muted);
-      font-size: 0.75rem;
-      text-transform: uppercase;
-    }
-    tbody td {
-      padding: 0.85rem 1.2rem;
-      border-top: 1px solid var(--border);
-      vertical-align: top;
-    }
-    tbody tr:hover td { background: var(--card); transition: background 0.15s; }
-    .prop { color: var(--muted); font-family: var(--mono); font-size: 0.78rem; }
-    .b-val { color: #a8baff; }
-    .i-val { color: #ffc49e; }
+    .card p { font-size: 0.83rem; color: #555; margin: 0.4rem 0 0.9rem; }
+    code { background: #eee; padding: 0.1rem 0.35rem; border-radius: 3px; font-size: 0.8rem; font-family: monospace; }
 
-    /* ── Elements list ── */
-    .tag-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.4rem;
-      margin-top: 0.5rem;
-    }
-    .tag-pill {
-      font-family: var(--mono);
-      font-size: 0.73rem;
-      padding: 0.25rem 0.6rem;
+    /* ── 데모 공통 ── */
+    .demo {
+      background: #f7f7f7;
+      border: 1px dashed #bbb;
       border-radius: 6px;
-    }
-    .pill-block { background: var(--block-light); color: var(--block-color); border: 1px solid var(--block-border); }
-    .pill-inline { background: var(--inline-light); color: var(--inline-color); border: 1px solid var(--inline-border); }
-
-    footer {
-      text-align: center;
-      padding: 2rem;
-      color: var(--muted);
+      padding: 0.8rem;
       font-size: 0.8rem;
-      border-top: 1px solid var(--border);
     }
+    .box {
+      padding: 0.5rem 0.8rem;
+      border-radius: 5px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #fff;
+      display: inline-block;
+    }
+
+    /* ── static ── */
+    .s-static { background: #78909c; display: block; margin-bottom: 4px; }
+
+    /* ── relative ── */
+    .rel-wrap { position: relative; height: 80px; }
+    .s-rel-normal { background: #78909c; }
+    .s-rel-moved  { background: #5c6bc0; position: relative; top: 12px; left: 20px; }
+
+    /* ── absolute ── */
+    .abs-wrap { position: relative; height: 90px; background: #e3f2fd; border-radius: 4px; border: 1px solid #90caf9; }
+    .s-abs-flow { background: #78909c; margin-bottom: 4px; display: block; }
+    .s-abs { background: #e53935; position: absolute; top: 8px; right: 8px; }
+
+    /* ── fixed ── */
+    .fixed-note {
+      background: #fff3cd;
+      border: 1px solid #ffc107;
+      border-radius: 6px;
+      padding: 0.6rem 0.9rem;
+      font-size: 0.8rem;
+      color: #5d4037;
+    }
+    .fixed-arrow { font-size: 0.75rem; color: #888; margin-top: 0.4rem; }
+
+    /* ── sticky ── */
+    .sticky-scroll {
+      height: 160px;
+      overflow-y: auto;
+      background: #f1f8e9;
+      border: 1px solid #aed581;
+      border-radius: 6px;
+      padding: 0;
+    }
+    .sticky-head {
+      position: sticky;
+      top: 0;
+      background: #33691e;
+      color: #fff;
+      padding: 0.4rem 0.8rem;
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+    .sticky-item {
+      padding: 0.5rem 0.9rem;
+      font-size: 0.78rem;
+      border-bottom: 1px solid #dcedc8;
+    }
+
+    /* ── 비교표 ── */
+    table { border-collapse: collapse; width: 100%; font-size: 0.8rem; margin-top: 0.5rem; }
+    th, td { border: 1px solid #ddd; padding: 0.5rem 0.7rem; text-align: left; vertical-align: top; }
+    th { background: #eee; font-weight: 700; }
+    td:first-child { font-family: monospace; font-weight: 700; color: #c0392b; white-space: nowrap; }
   </style>
 </head>
 <body>
 
-<header>
-  <h1>
-    <span class="badge-block">Block</span>
-    &nbsp;vs&nbsp;
-    <span class="badge-inline">Inline</span>
-    &nbsp;요소
-  </h1>
-  <p>HTML 레이아웃의 핵심 — 두 가지 디스플레이 유형의 동작 방식을 시각적으로 비교합니다.</p>
-</header>
+<!-- fixed 데모: 실제 화면 상단에 고정 -->
+<div id="top-bar">
+  📌 position: fixed <span>← 이 바 자체가 fixed 예제입니다. 스크롤해도 고정됩니다.</span>
+</div>
 
 <main>
+  <h1>📐 CSS Position 5가지</h1>
+  <p class="sub">요소의 배치 기준을 결정하는 <code>position</code> 속성을 예제와 함께 비교합니다.</p>
 
-  <!-- ── BLOCK ── -->
-  <div class="section-card">
-    <div class="section-header">
-      <div class="dot dot-block"></div>
-      <h2>Block 요소</h2>
-      <span class="tag tag-block">display: block</span>
+  <!-- ── 1. static ── -->
+  <div class="card">
+    <h2><span class="badge" style="background:#78909c;">static</span> 기본값 — 문서 흐름대로</h2>
+    <p>모든 요소의 기본값. <code>top / right / bottom / left</code> 속성이 <strong>무시</strong>됩니다. 위에서 아래로, 왼쪽에서 오른쪽으로 순서대로 배치됩니다.</p>
+    <div class="demo">
+      <span class="box s-static">첫 번째 박스</span>
+      <span class="box s-static">두 번째 박스</span>
+      <span class="box s-static">세 번째 박스</span>
     </div>
-    <div class="section-body">
+    <p style="margin-top:0.5rem;">코드: <code>position: static;</code> (생략 가능)</p>
+  </div>
 
-      <div class="explain-grid">
-        <div class="explain-item">
-          <dt>너비</dt>
-          <dd>부모 컨테이너의 <strong>100%</strong>를 자동으로 차지</dd>
-        </div>
-        <div class="explain-item">
-          <dt>줄바꿈</dt>
-          <dd>요소 앞·뒤로 <strong>자동 줄바꿈</strong> 발생</dd>
-        </div>
-        <div class="explain-item">
-          <dt>크기 조절</dt>
-          <dd><code>width</code> / <code>height</code> 모두 적용 가능</dd>
-        </div>
-        <div class="explain-item">
-          <dt>여백</dt>
-          <dd><code>margin</code> · <code>padding</code> 상하좌우 모두 적용</dd>
-        </div>
-      </div>
+  <!-- ── 2. relative ── -->
+  <div class="card">
+    <h2><span class="badge" style="background:#5c6bc0;">relative</span> 원래 위치 기준으로 이동</h2>
+    <p>문서 흐름은 유지하면서 <strong>자기 자신의 원래 위치</strong>를 기준으로 이동합니다. 원래 자리는 빈 공간으로 남습니다.</p>
+    <div class="demo rel-wrap">
+      <span class="box s-rel-normal">일반 박스</span>
+      <span class="box s-rel-moved">relative 박스 (top:12px, left:20px)</span>
+    </div>
+    <p style="margin-top:0.5rem;">코드: <code>position: relative; top: 12px; left: 20px;</code></p>
+  </div>
 
-      <p class="demo-label">▸ 시각적 데모</p>
-      <div class="demo-box">
-        <div class="demo-div" data-tag="&lt;div&gt;">div — 전체 너비를 점유합니다</div>
-        <div class="demo-div" data-tag="&lt;p&gt;">p — 단락 요소, 앞뒤로 줄이 바뀝니다</div>
-        <div class="demo-div" data-tag="&lt;h2&gt;">h2 — 제목 요소, 독립된 줄에 표시됩니다</div>
-        <div class="demo-div" data-tag="&lt;section&gt;">section — 콘텐츠 구획 요소</div>
-      </div>
+  <!-- ── 3. absolute ── -->
+  <div class="card">
+    <h2><span class="badge" style="background:#e53935;">absolute</span> 가장 가까운 부모 기준</h2>
+    <p><strong>문서 흐름에서 완전히 제거</strong>됩니다. <code>position: relative</code> 이상인 가장 가까운 부모를 기준으로 배치됩니다. 없으면 <code>&lt;html&gt;</code>이 기준.</p>
+    <div class="demo abs-wrap">
+      <span class="box s-abs-flow">일반 박스 (흐름)</span>
+      <span class="box s-abs">absolute (top:8px, right:8px)</span>
+    </div>
+    <p style="margin-top:0.5rem;">코드: <code>position: absolute; top: 8px; right: 8px;</code> — 파란 부모 기준</p>
+  </div>
 
-      <div class="code-wrap">
-        <p class="demo-label">▸ 코드 예시</p>
-        <pre><span class="cmt">&lt;!-- block 요소는 자동으로 새 줄에서 시작합니다 --&gt;</span>
-<span class="tag">&lt;div&gt;</span><span class="bl">이 div는 100% 너비를 차지합니다.</span><span class="tag">&lt;/div&gt;</span>
-<span class="tag">&lt;p&gt;</span><span class="bl">다음 줄에 자동으로 배치됩니다.</span><span class="tag">&lt;/p&gt;</span>
-<span class="tag">&lt;h1&gt;</span><span class="bl">제목도 block 요소입니다.</span><span class="tag">&lt;/h1&gt;</span>
-<span class="tag">&lt;ul&gt;</span>
-  <span class="tag">&lt;li&gt;</span><span class="bl">목록 항목</span><span class="tag">&lt;/li&gt;</span>
-<span class="tag">&lt;/ul&gt;</span></pre>
-      </div>
-
-      <div style="margin-top:1.2rem;">
-        <p class="demo-label">▸ 대표 block 태그</p>
-        <div class="tag-list">
-          <span class="tag-pill pill-block">&lt;div&gt;</span>
-          <span class="tag-pill pill-block">&lt;p&gt;</span>
-          <span class="tag-pill pill-block">&lt;h1&gt;~&lt;h6&gt;</span>
-          <span class="tag-pill pill-block">&lt;ul&gt; &lt;ol&gt; &lt;li&gt;</span>
-          <span class="tag-pill pill-block">&lt;section&gt;</span>
-          <span class="tag-pill pill-block">&lt;article&gt;</span>
-          <span class="tag-pill pill-block">&lt;header&gt;</span>
-          <span class="tag-pill pill-block">&lt;footer&gt;</span>
-          <span class="tag-pill pill-block">&lt;nav&gt;</span>
-          <span class="tag-pill pill-block">&lt;form&gt;</span>
-          <span class="tag-pill pill-block">&lt;table&gt;</span>
-          <span class="tag-pill pill-block">&lt;blockquote&gt;</span>
-        </div>
-      </div>
-
+  <!-- ── 4. fixed ── -->
+  <div class="card">
+    <h2><span class="badge" style="background:#2e7d32; color:#fff;">fixed</span> 뷰포트(화면) 기준으로 고정</h2>
+    <p>스크롤해도 <strong>화면 특정 위치에 고정</strong>됩니다. 문서 흐름에서 제거됩니다. 내비게이션 바, 플로팅 버튼에 주로 사용합니다.</p>
+    <div class="fixed-note">
+      ☝️ 이 페이지 최상단의 <strong>검은 바</strong>가 <code>position: fixed</code>로 구현된 예제입니다.
+      <div class="fixed-arrow">코드: <code>position: fixed; top: 0; left: 0; right: 0;</code></div>
     </div>
   </div>
 
-  <!-- ── INLINE ── -->
-  <div class="section-card">
-    <div class="section-header">
-      <div class="dot dot-inline"></div>
-      <h2>Inline 요소</h2>
-      <span class="tag tag-inline">display: inline</span>
+  <!-- ── 5. sticky ── -->
+  <div class="card">
+    <h2><span class="badge" style="background:#f57c00; color:#fff;">sticky</span> 스크롤 임계점에서 고정</h2>
+    <p>평소엔 <code>relative</code>처럼 흐르다가, 지정한 임계점(<code>top</code> 등)에 도달하면 <code>fixed</code>처럼 고정됩니다. 아래 박스를 <strong>스크롤</strong>해보세요.</p>
+    <div class="sticky-scroll">
+      <div class="sticky-head">📌 sticky 헤더 — 스크롤해도 이 줄은 고정됩니다 (position: sticky; top: 0)</div>
+      <div class="sticky-item">목록 항목 1</div>
+      <div class="sticky-item">목록 항목 2</div>
+      <div class="sticky-item">목록 항목 3</div>
+      <div class="sticky-item">목록 항목 4</div>
+      <div class="sticky-item">목록 항목 5</div>
+      <div class="sticky-item">목록 항목 6</div>
+      <div class="sticky-item">목록 항목 7</div>
     </div>
-    <div class="section-body">
-
-      <div class="explain-grid">
-        <div class="explain-item">
-          <dt>너비</dt>
-          <dd>콘텐츠 크기만큼만 차지 — <strong>줄 안에 나란히</strong> 배치</dd>
-        </div>
-        <div class="explain-item">
-          <dt>줄바꿈</dt>
-          <dd>줄바꿈 없이 <strong>텍스트 흐름 속</strong>에 위치</dd>
-        </div>
-        <div class="explain-item">
-          <dt>크기 조절</dt>
-          <dd><code>width</code> / <code>height</code> 적용 <strong>불가</strong></dd>
-        </div>
-        <div class="explain-item">
-          <dt>여백</dt>
-          <dd>좌우 <code>margin</code>·<code>padding</code>만 적용, 상하는 레이아웃에 영향 없음</dd>
-        </div>
-      </div>
-
-      <p class="demo-label">▸ 시각적 데모</p>
-      <div class="demo-inline-wrap">
-        일반 텍스트 사이에
-        <span class="il">&lt;span&gt;스팬</span>
-        이 인라인으로 삽입되고,
-        <span class="il">&lt;a&gt;링크</span>
-        도 줄 안에 있으며,
-        <span class="il">&lt;strong&gt;굵은 글자</span>
-        와
-        <span class="il">&lt;em&gt;기울임</span>
-        도 모두 같은 줄에 나란히 흐릅니다.
-        텍스트가 길어지면 자연스럽게 다음 줄로 이어집니다.
-        <span class="il">&lt;code&gt;코드</span>
-        도 인라인입니다.
-      </div>
-
-      <div class="code-wrap">
-        <p class="demo-label">▸ 코드 예시</p>
-        <pre><span class="cmt">&lt;!-- inline 요소는 텍스트 흐름 안에 배치됩니다 --&gt;</span>
-<span class="tag">&lt;p&gt;</span>
-  이 문장에서 <span class="tag">&lt;span</span> <span class="attr">style</span>=<span class="val">"color:orange"</span><span class="tag">&gt;</span><span class="il">이 부분</span><span class="tag">&lt;/span&gt;</span>만 강조됩니다.
-  <span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="val">"#"</span><span class="tag">&gt;</span><span class="il">링크</span><span class="tag">&lt;/a&gt;</span>도 같은 줄에 있고,
-  <span class="tag">&lt;strong&gt;</span><span class="il">굵게</span><span class="tag">&lt;/strong&gt;</span>나 <span class="tag">&lt;em&gt;</span><span class="il">기울임</span><span class="tag">&lt;/em&gt;</span>도 마찬가지입니다.
-<span class="tag">&lt;/p&gt;</span></pre>
-      </div>
-
-      <div style="margin-top:1.2rem;">
-        <p class="demo-label">▸ 대표 inline 태그</p>
-        <div class="tag-list">
-          <span class="tag-pill pill-inline">&lt;span&gt;</span>
-          <span class="tag-pill pill-inline">&lt;a&gt;</span>
-          <span class="tag-pill pill-inline">&lt;strong&gt;</span>
-          <span class="tag-pill pill-inline">&lt;em&gt;</span>
-          <span class="tag-pill pill-inline">&lt;b&gt; &lt;i&gt;</span>
-          <span class="tag-pill pill-inline">&lt;code&gt;</span>
-          <span class="tag-pill pill-inline">&lt;img&gt;</span>
-          <span class="tag-pill pill-inline">&lt;input&gt;</span>
-          <span class="tag-pill pill-inline">&lt;button&gt;</span>
-          <span class="tag-pill pill-inline">&lt;label&gt;</span>
-          <span class="tag-pill pill-inline">&lt;abbr&gt;</span>
-          <span class="tag-pill pill-inline">&lt;sup&gt; &lt;sub&gt;</span>
-        </div>
-      </div>
-
-    </div>
+    <p style="margin-top:0.5rem;">코드: <code>position: sticky; top: 0;</code></p>
   </div>
 
-  <!-- ── Comparison table ── -->
-  <div class="compare-card">
-    <h2 style="padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border); font-size:1rem; font-weight:700;">📊 한눈에 비교</h2>
-    <table>
+  <!-- ── 비교표 ── -->
+  <div class="card">
+    <h2>📊 한눈에 비교</h2>
+    <table style="margin-top:0.8rem;">
       <thead>
-        <tr>
-          <th>속성</th>
-          <th style="color: var(--block-color);">Block 요소</th>
-          <th style="color: var(--inline-color);">Inline 요소</th>
-        </tr>
+        <tr><th>position</th><th>기준점</th><th>흐름 유지</th><th>스크롤 고정</th><th>주요 용도</th></tr>
       </thead>
       <tbody>
         <tr>
-          <td class="prop">기본 너비</td>
-          <td class="b-val">부모의 100%</td>
-          <td class="i-val">콘텐츠 너비만큼</td>
+          <td>static</td>
+          <td>문서 흐름</td>
+          <td>✅</td>
+          <td>❌</td>
+          <td>기본 배치</td>
         </tr>
         <tr>
-          <td class="prop">줄바꿈</td>
-          <td class="b-val">자동 줄바꿈</td>
-          <td class="i-val">줄바꿈 없음</td>
+          <td>relative</td>
+          <td>자기 원래 위치</td>
+          <td>✅ (공간 유지)</td>
+          <td>❌</td>
+          <td>미세 조정, absolute 기준점</td>
         </tr>
         <tr>
-          <td class="prop">width / height</td>
-          <td class="b-val">✅ 적용 가능</td>
-          <td class="i-val">❌ 적용 불가</td>
+          <td>absolute</td>
+          <td>가장 가까운 relative 부모</td>
+          <td>❌</td>
+          <td>❌</td>
+          <td>말풍선, 툴팁, 배지</td>
         </tr>
         <tr>
-          <td class="prop">margin (상하)</td>
-          <td class="b-val">✅ 적용됨</td>
-          <td class="i-val">❌ 레이아웃에 영향 없음</td>
+          <td>fixed</td>
+          <td>뷰포트(브라우저 창)</td>
+          <td>❌</td>
+          <td>✅ 항상</td>
+          <td>상단 바, 플로팅 버튼</td>
         </tr>
         <tr>
-          <td class="prop">padding (상하)</td>
-          <td class="b-val">✅ 적용됨</td>
-          <td class="i-val">⚠️ 시각적으로만 적용</td>
-        </tr>
-        <tr>
-          <td class="prop">중첩 규칙</td>
-          <td class="b-val">block·inline 모두 포함 가능</td>
-          <td class="i-val">inline 요소만 포함 가능</td>
-        </tr>
-        <tr>
-          <td class="prop">주요 용도</td>
-          <td class="b-val">레이아웃 구조, 섹션 구분</td>
-          <td class="i-val">텍스트 강조, 링크, 아이콘</td>
-        </tr>
-        <tr>
-          <td class="prop">혼합 방법</td>
-          <td colspan="2" style="color: var(--text);">
-            <code style="background:var(--card); padding:0.1rem 0.4rem; border-radius:4px; font-size:0.78rem;">display: inline-block</code>
-            — 두 속성의 장점을 결합 (너비 지정 가능 + 줄 안에 배치)
-          </td>
+          <td>sticky</td>
+          <td>relative → 임계점 후 fixed</td>
+          <td>✅</td>
+          <td>✅ 조건부</td>
+          <td>테이블 헤더, 섹션 제목</td>
         </tr>
       </tbody>
     </table>
   </div>
 
 </main>
-
-<footer>HTML Block &amp; Inline 요소 시각화 가이드</footer>
-
 </body>
 </html>
