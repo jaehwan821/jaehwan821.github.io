@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>리스트와 하이퍼링크 (ul, a)</title>
+<style>
+  body { font-family: sans-serif; line-height: 1.6; max-width: 700px; margin: 40px auto; padding: 0 20px; color: #333; }
+  h1 { color: #2980b9; }
+  section { margin-bottom: 30px; padding: 15px; border: 1px solid #ddd; border-radius: 8px; }
+  code { background: #f4f4f4; padding: 2px 6px; border-radius: 4px; }
+  a.back { display: inline-block; margin-top: 20px; }
+</style>
+</head>
+<body>
+  <h1>리스트와 하이퍼링크 (ul, a)</h1>
+
+  <section>
+    <h2>순서 없는 목록 (ul, li)</h2>
+    <ul>
+      <li>사과</li>
+      <li>바나나</li>
+      <li>딸기</li>
+    </ul>
+    <code>&lt;ul&gt;&lt;li&gt;...&lt;/li&gt;&lt;/ul&gt;</code>
+  </section>
+
+  <section>
+    <h2>순서 있는 목록 (ol, li)</h2>
+    <ol>
+      <li>재료 준비</li>
+      <li>재료 손질</li>
+      <li>조리</li>
+    </ol>
+    <code>&lt;ol&gt;&lt;li&gt;...&lt;/li&gt;&lt;/ol&gt;</code>
+  </section>
+
+  <section>
+    <h2>하이퍼링크 (a)</h2>
+    <p>
+      같은 사이트 안의 다른 페이지로 이동: <a href="../index.html">메인 페이지로</a><br>
+      외부 사이트로 이동: <a href="https://www.w3.org/" target="_blank" rel="noopener">W3C 바로가기</a> (새 창에서 열림)
+    </p>
+    <code>&lt;a href="경로 또는 URL"&gt;텍스트&lt;/a&gt;</code>
+  </section>
+
+  <a class="back" href="../index.html">&larr; 메인으로 돌아가기</a>
+</body>
+</html>

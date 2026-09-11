@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>이미지 및 멀티미디어 삽입</title>
+<style>
+  body { font-family: sans-serif; line-height: 1.6; max-width: 700px; margin: 40px auto; padding: 0 20px; color: #333; }
+  h1 { color: #2980b9; }
+  section { margin-bottom: 30px; padding: 15px; border: 1px solid #ddd; border-radius: 8px; }
+  code { background: #f4f4f4; padding: 2px 6px; border-radius: 4px; }
+  figure { margin: 0; }
+  figure img { max-width: 100%; border-radius: 6px; }
+  .placeholder { width: 100%; max-width: 320px; height: 180px; background: #ddd; display: flex; align-items: center; justify-content: center; color: #666; border-radius: 6px; }
+  a.back { display: inline-block; margin-top: 20px; }
+</style>
+</head>
+<body>
+  <h1>이미지 및 멀티미디어 삽입</h1>
+
+  <section>
+    <h2>이미지 (img)</h2>
+    <figure>
+      <div class="placeholder">이미지 자리 (예: images/photo.jpg)</div>
+      <figcaption>실제 이미지 파일을 images/ 폴더에 넣고 src를 바꾸면 표시됩니다.</figcaption>
+    </figure>
+    <code>&lt;img src="../images/photo.jpg" alt="설명"&gt;</code>
+  </section>
+
+  <section>
+    <h2>오디오 (audio)</h2>
+    <p>audio 태그는 음악, 목소리 등의 소리 파일을 재생할 때 사용합니다.</p>
+    <code>&lt;audio controls src="../audio/sound.mp3"&gt;&lt;/audio&gt;</code>
+  </section>
+
+  <section>
+    <h2>비디오 (video)</h2>
+    <p>video 태그는 동영상 파일을 재생할 때 사용합니다.</p>
+    <code>&lt;video controls width="320" src="../video/clip.mp4"&gt;&lt;/video&gt;</code>
+  </section>
+
+  <a class="back" href="../index.html">&larr; 메인으로 돌아가기</a>
+</body>
+</html>

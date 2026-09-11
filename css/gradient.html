@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>배경 이미지 및 그라데이션</title>
+<style>
+  body { font-family: sans-serif; line-height: 1.6; max-width: 700px; margin: 40px auto; padding: 0 20px; color: #333; }
+  h1 { color: #2980b9; }
+  section { margin-bottom: 30px; padding: 15px; border: 1px solid #ddd; border-radius: 8px; }
+  .box { height: 120px; border-radius: 8px; margin-top: 10px; }
+  .linear { background: linear-gradient(135deg, #2980b9, #6dd5fa); }
+  .radial { background: radial-gradient(circle, #f7b733, #fc4a1a); }
+  .pattern {
+    background-image: repeating-linear-gradient(45deg, #eee, #eee 10px, #fff 10px, #fff 20px);
+  }
+  code { background: #f4f4f4; padding: 2px 6px; border-radius: 4px; display: block; margin-top: 10px; }
+  a.back { display: inline-block; margin-top: 20px; }
+</style>
+</head>
+<body>
+  <h1>배경 이미지 및 그라데이션</h1>
+
+  <section>
+    <h2>선형 그라데이션 (linear-gradient)</h2>
+    <div class="box linear"></div>
+    <code>background: linear-gradient(135deg, #2980b9, #6dd5fa);</code>
+  </section>
+
+  <section>
+    <h2>원형 그라데이션 (radial-gradient)</h2>
+    <div class="box radial"></div>
+    <code>background: radial-gradient(circle, #f7b733, #fc4a1a);</code>
+  </section>
+
+  <section>
+    <h2>반복 패턴 (repeating-linear-gradient)</h2>
+    <div class="box pattern"></div>
+    <code>background-image: repeating-linear-gradient(45deg, #eee, #eee 10px, #fff 10px, #fff 20px);</code>
+  </section>
+
+  <a class="back" href="../index.html">&larr; 메인으로 돌아가기</a>
+</body>
+</html>

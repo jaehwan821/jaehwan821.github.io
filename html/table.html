@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>테이블 구조 설계 (table)</title>
+<style>
+  body { font-family: sans-serif; line-height: 1.6; max-width: 700px; margin: 40px auto; padding: 0 20px; color: #333; }
+  h1 { color: #2980b9; }
+  section { margin-bottom: 30px; padding: 15px; border: 1px solid #ddd; border-radius: 8px; }
+  table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+  th, td { border: 1px solid #ccc; padding: 8px 10px; text-align: left; }
+  th { background: #2980b9; color: white; }
+  tbody tr:nth-child(even) { background: #f4f7f6; }
+  code { background: #f4f4f4; padding: 2px 6px; border-radius: 4px; display: block; margin-top: 10px; white-space: pre-wrap; }
+  a.back { display: inline-block; margin-top: 20px; }
+</style>
+</head>
+<body>
+  <h1>테이블 구조 설계 (table)</h1>
+
+  <section>
+    <h2>수업 시간표 예제</h2>
+    <table>
+      <thead>
+        <tr><th>교시</th><th>월</th><th>화</th><th>수</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td>-</td><td>정보보안 개론</td><td>-</td></tr>
+        <tr><td>2</td><td>웹프로그래밍</td><td>정보보안 개론</td><td>-</td></tr>
+        <tr><td>3</td><td>웹프로그래밍</td><td>-</td><td>자료구조</td></tr>
+      </tbody>
+    </table>
+    <code>&lt;table&gt;
+  &lt;thead&gt;&lt;tr&gt;&lt;th&gt;...&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
+  &lt;tbody&gt;&lt;tr&gt;&lt;td&gt;...&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;
+&lt;/table&gt;</code>
+  </section>
+
+  <a class="back" href="../index.html">&larr; 메인으로 돌아가기</a>
+</body>
+</html>
