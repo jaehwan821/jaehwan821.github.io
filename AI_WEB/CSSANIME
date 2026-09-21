@@ -1,0 +1,123 @@
+<div class="color-box">Color Animation</div>
+    </div>
+  </div>
+
+  <h3>수정한 HTML/CSS 코드</h3>
+  <pre><code>&lt;div class="color-box"&gt;Color Animation&lt;/div&gt;
+
+.color-box {
+  width: 200px;
+  height: 200px;
+  border: 5px solid red;
+  animation: borderColorChange 4s infinite;
+  margin: 100px auto;
+}
+
+.color-box:hover {
+  width: 400px;
+}
+
+@keyframes borderColorChange {
+  0%   { border: 2px dotted red; }
+  25%  { border: 5px dashed blue; }
+  50%  { border: 15px groove green; }
+  75%  { border: 5px inset orange; }
+  100% { border: 2px solid cyan; }
+}</code></pre>
+
+  <div class="fix">
+    <strong>수정한 부분:</strong>
+    원래 코드의 <code>div:hover</code>는 페이지 안의 모든 div에 영향을 줄 수 있으므로
+    <code>.box:hover</code>로 수정하는 것이 더 안전합니다.
+    이 통합 문서에서는 충돌을 피하기 위해 <code>.color-box:hover</code>로 구체화했습니다.
+  </div>
+</section>
+
+<section class="section">
+  <h2>3. 예제 7-12 — 이동 Animation</h2>
+
+  <h3>프로그램 설명</h3>
+  <p>
+    100×50 크기의 청록색 박스가 5초 동안 좌상단 → 우상단 → 우하단 →
+    좌하단 → 좌상단 순서로 이동합니다.
+    각 키 프레임마다 테두리의 색상과 스타일도 함께 변경됩니다.
+  </p>
+
+  <div class="demo">
+    <h3>실행 결과</h3>
+    <div class="demo-area move-area">
+      <div class="move-box"><h4>translation Animation</h4></div>
+    </div>
+  </div>
+
+  <h3>수정한 HTML/CSS 코드</h3>
+  <pre><code>&lt;div class="move-box"&gt;
+  &lt;h4&gt;translation Animation&lt;/h4&gt;
+&lt;/div&gt;
+
+.move-box {
+  width: 100px;
+  height: 50px;
+  background: cyan;
+  position: absolute;
+  animation: moveAnimation 5s infinite;
+}
+
+@keyframes moveAnimation {
+  0%   { border: 2px dotted red;   left: 0;   top: 0;   }
+  25%  { border: 5px dashed green; left: 200px; top: 0;   }
+  50%  { border: 15px groove blue; left: 200px; top: 200px; }
+  75%  { border: 5px inset cyan;   left: 0;   top: 200px; }
+  100% { border: 2px solid orange; left: 0;   top: 0;   }
+}</code></pre>
+
+  <div class="fix">
+    <strong>수정한 부분:</strong>
+    원래 예제의 <code>animation-name: color</code>는 색상 애니메이션과 이름이 혼동될 수 있어
+    <code>moveAnimation</code>으로 변경했습니다. 기능은 동일하지만 프로그램의 의미를 더 명확하게 나타냅니다.
+    또한 이동 영역의 기준을 명확하게 하기 위해 <code>position: absolute</code>와
+    <code>.move-area</code>를 사용했습니다.
+  </div>
+
+  <h3>키 프레임별 동작</h3>
+  <table>
+    <tr><th>시점</th><th>위치</th><th>테두리</th><th>동작</th></tr>
+    <tr><td>0%</td><td>left: 0, top: 0</td><td>2px dotted red</td><td>좌상단에서 시작</td></tr>
+    <tr><td>25%</td><td>left: 200px, top: 0</td><td>5px dashed green</td><td>오른쪽으로 이동</td></tr>
+    <tr><td>50%</td><td>left: 200px, top: 200px</td><td>15px groove blue</td><td>오른쪽 아래로 이동</td></tr>
+    <tr><td>75%</td><td>left: 0, top: 200px</td><td>5px inset cyan</td><td>왼쪽 아래로 이동</td></tr>
+    <tr><td>100%</td><td>left: 0, top: 0</td><td>2px solid orange</td><td>처음 위치로 복귀</td></tr>
+  </table>
+</section>
+
+<section class="section">
+  <h2>4. 두 예제 비교</h2>
+  <table class="comparison">
+    <tr><th>항목</th><th>예제 7-11 Color Animation</th><th>예제 7-12 이동 Animation</th></tr>
+    <tr><td>핵심 변화</td><td>테두리 색상과 스타일 변화</td><td>위치와 테두리 변화</td></tr>
+    <tr><td>핵심 문법</td><td><code>@keyframes borderColorChange</code></td><td><code>@keyframes moveAnimation</code></td></tr>
+    <tr><td>시간</td><td>4초</td><td>5초</td></tr>
+    <tr><td>반복</td><td>무한 반복</td><td>무한 반복</td></tr>
+    <tr><td>추가 기능</td><td>hover 시 너비 확대</td><td>좌표를 이용한 이동</td></tr>
+  </table>
+</section>
+
+<section class="section">
+  <h2>5. 학습 포인트</h2>
+  <ol>
+    <li><code>@keyframes</code>는 애니메이션의 주요 시점을 정의합니다.</li>
+    <li><code>0%, 25%, 50%, 75%, 100%</code>처럼 여러 키 프레임을 지정할 수 있습니다.</li>
+    <li>키 프레임 사이의 변화는 브라우저가 자동으로 계산합니다.</li>
+    <li>위치 이동에는 <code>position</code>과 <code>left/top</code>을 사용할 수 있습니다.</li>
+    <li>하나의 애니메이션에서 위치, 색상, 테두리, 크기 등을 동시에 변경할 수 있습니다.</li>
+    <li>클래스 이름을 구체적으로 지정하면 서로 다른 예제의 CSS가 충돌하는 것을 예방할 수 있습니다.</li>
+  </ol>
+</section>
+
+<footer>
+  CSS3 Animation 학습용 통합 HTML 문서 · 예제 7-11 / 예제 7-12
+</footer>
+
+</div>
+</body>
+</html>
