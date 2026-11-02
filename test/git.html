@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Git 한눈에 보기</title>
+    <style>
+        :root {
+            --ink: #17212b;
+            --muted: #64727e;
+            --paper: #f7f8f6;
+            --panel: #ffffff;
+            --line: #dce3e6;
+            --orange: #e85d2a;
+            --orange-dark: #b83d16;
+            --green: #167c69;
+            --code: #17212b;
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            color: var(--ink);
+            background: var(--paper);
+            font-family: "Malgun Gothic", "Noto Sans KR", sans-serif;
+            line-height: 1.7;
+        }
+        header {
+            padding: 72px 24px 64px;
+            color: #fff;
+            background: var(--ink);
+            border-bottom: 8px solid var(--orange);
+        }
+        .hero, main { max-width: 1080px; margin: 0 auto; }
+        .eyebrow {
+            margin: 0 0 12px;
+            color: #ffae83;
+            font-size: .8rem;
+            font-weight: 700;
+            letter-spacing: .14em;
+        }
+        h1, h2, h3 { line-height: 1.25; }
+        h1 { max-width: 680px; margin: 0; font-size: clamp(2.4rem, 6vw, 4.8rem); }
+        .hero p { max-width: 620px; margin: 24px 0 0; color: #d8e0e4; font-size: 1.08rem; }
+        main { padding: 48px 24px 80px; }
+        section { margin-bottom: 56px; }
+        .section-heading { display: flex; align-items: baseline; gap: 14px; margin-bottom: 20px; }
+        .section-number { color: var(--orange); font-size: .9rem; font-weight: 800; }
+        h2 { margin: 0; font-size: 2rem; }
+        h3 { margin: 0 0 10px; font-size: 1.15rem; }
+        .intro { max-width: 720px; margin: 0 0 24px; color: var(--muted); }
+        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+        .card {
+            padding: 24px;
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-top: 4px solid var(--orange);
+        }
+        .card p, .card ul { margin: 0; color: var(--muted); }
+        .card ul { padding-left: 20px; }
+        .flow { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 24px 0; }
+        .flow-step { padding: 18px; background: #fff4ed; border-left: 4px solid var(--orange); }
+        .flow-step strong { display: block; color: var(--orange-dark); }
+        .command-list { display: grid; gap: 12px; }
+        .command {
+            display: grid;
+            grid-template-columns: minmax(190px, 250px) 1fr;
+            gap: 20px;
+            align-items: start;
+            padding: 18px 20px;
+            background: var(--panel);
+            border: 1px solid var(--line);
+        }
+        code, pre { font-family: Consolas, "Courier New", monospace; }
+        .command code { color: var(--green); font-weight: 700; }
+        .command p { margin: 0; color: var(--muted); }
+        pre { overflow-x: auto; margin: 0; padding: 22px; color: #eef5f2; background: var(--code); border-left: 5px solid var(--green); }
+        .note { margin-top: 18px; padding: 18px 20px; color: #21564d; background: #e8f4f0; border: 1px solid #b9ded5; }
+        footer { padding: 24px; color: #d8e0e4; text-align: center; background: var(--ink); }
+        @media (max-width: 760px) {
+            header { padding: 52px 20px 46px; }
+            main { padding: 36px 20px 56px; }
+            .grid, .flow { grid-template-columns: 1fr; }
+            .command { grid-template-columns: 1fr; gap: 8px; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="hero">
+            <p class="eyebrow">VERSION CONTROL / QUICK GUIDE</p>
+            <h1>Git을 배우면<br>코드의 시간을 관리할 수 있습니다.</h1>
+            <p>Git은 파일의 변경 이력을 기록하고, 여러 사람이 같은 프로젝트를 안전하게 협업하도록 도와주는 분산 버전 관리 시스템입니다.</p>
+        </div>
+    </header>
+    <main>
+        <section>
+            <div class="section-heading"><span class="section-number">01</span><h2>Git의 핵심 개념</h2></div>
+            <p class="intro">작업한 파일을 바로 공유하는 대신, 변경 내용을 단계적으로 기록한 뒤 원격 저장소와 동기화합니다.</p>
+            <div class="grid">
+                <article class="card"><h3>저장소 Repository</h3><p>프로젝트의 파일과 모든 변경 이력을 저장하는 공간입니다. 로컬 저장소와 GitHub 같은 원격 저장소가 있습니다.</p></article>
+                <article class="card"><h3>커밋 Commit</h3><p>특정 시점의 변경 내용을 하나의 기록으로 남기는 작업입니다. 커밋 메시지는 무엇을 바꿨는지 분명하게 작성합니다.</p></article>
+                <article class="card"><h3>브랜치 Branch</h3><p>기존 코드에 영향을 주지 않고 기능을 개발하는 작업 공간입니다. 완성한 뒤 main 브랜치에 병합합니다.</p></article>
+            </div>
+        </section>
+        <section>
+            <div class="section-heading"><span class="section-number">02</span><h2>기본 작업 흐름</h2></div>
+            <div class="flow">
+                <div class="flow-step"><strong>1. 수정</strong>파일을 만들거나 코드를 변경합니다.</div>
+                <div class="flow-step"><strong>2. 스테이징</strong>커밋할 변경을 선택합니다.</div>
+                <div class="flow-step"><strong>3. 커밋</strong>변경 내용을 로컬 이력에 기록합니다.</div>
+                <div class="flow-step"><strong>4. 푸시</strong>원격 저장소에 업로드합니다.</div>
+            </div>
+            <pre><code>git status
+git add index.html
+git commit -m "페이지 내용 수정"
+git push origin main</code></pre>
+        </section>
+        <section>
+            <div class="section-heading"><span class="section-number">03</span><h2>자주 사용하는 명령어</h2></div>
+            <div class="command-list">
+                <div class="command"><code>git init</code><p>현재 폴더를 새로운 Git 저장소로 초기화합니다.</p></div>
+                <div class="command"><code>git clone URL</code><p>원격 저장소를 컴퓨터에 복사하고 연결합니다.</p></div>
+                <div class="command"><code>git status</code><p>수정된 파일, 스테이징된 파일, 현재 브랜치를 확인합니다.</p></div>
+                <div class="command"><code>git add 파일명</code><p>지정한 파일을 다음 커밋에 포함하도록 스테이징합니다. 모든 파일은 <code>git add .</code>으로 선택할 수 있습니다.</p></div>
+                <div class="command"><code>git commit -m "메시지"</code><p>스테이징된 변경 내용을 로컬 저장소에 기록합니다.</p></div>
+                <div class="command"><code>git log</code><p>이전 커밋의 작성자, 날짜, 메시지와 변경 이력을 확인합니다.</p></div>
+                <div class="command"><code>git diff</code><p>아직 커밋하지 않은 변경 내용을 줄 단위로 비교합니다.</p></div>
+                <div class="command"><code>git pull</code><p>원격 저장소의 최신 변경 내용을 내려받아 현재 브랜치에 반영합니다.</p></div>
+                <div class="command"><code>git push origin 브랜치명</code><p>로컬 커밋을 원격 저장소에 업로드합니다.</p></div>
+                <div class="command"><code>git branch 브랜치명</code><p>새 브랜치를 만들고, <code>git switch 브랜치명</code>으로 이동합니다.</p></div>
+                <div class="command"><code>git merge 브랜치명</code><p>다른 브랜치의 변경 내용을 현재 브랜치에 합칩니다.</p></div>
+            </div>
+        </section>
+        <section>
+            <div class="section-heading"><span class="section-number">04</span><h2>처음 시작할 때</h2></div>
+            <pre><code># 사용자 정보 설정
+git config --global user.name "이름"
+git config --global user.email "email@example.com"
+
+# 프로젝트 내려받기
+git clone https://github.com/사용자명/저장소명.git
+cd 저장소명
+
+# 변경 기록 남기기
+git add .
+git commit -m "첫 번째 커밋"
+git push origin main</code></pre>
+            <div class="note"><strong>주의:</strong> <code>git add .</code>을 실행하기 전에 <code>git status</code>로 비밀번호, API 키 같은 민감한 파일이 포함되지 않았는지 확인하세요. 필요한 파일은 <code>.gitignore</code>에 등록합니다.</div>
+        </section>
+    </main>
+    <footer>작은 커밋을 자주 남기면 변경 이력을 이해하기 쉬워집니다.</footer>
+</body>
+</html>

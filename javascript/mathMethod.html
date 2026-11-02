@@ -1,0 +1,117 @@
+<!DOCTYPE html>  <!-- HTML5 문서 형식을 선언합니다. -->
+<html>  <!-- HTML 문서의 시작입니다. -->
+<head>  <!-- 문서의 기본 정보를 작성하는 영역입니다. -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>예제 9-9Math 속성</title>  <!-- 브라우저 탭에 표시할 문서 제목입니다. -->
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 32px 20px 56px;
+            color: #1d2935;
+            background: #f3f6f5;
+            font-family: "Malgun Gothic", "Noto Sans KR", sans-serif;
+            line-height: 1.6;
+        }
+        h1 { margin: 0 0 8px; color: #173c48; }
+        .intro { margin: 0 0 28px; color: #61717a; }
+        .math-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+        .math-card {
+            overflow: hidden;
+            padding: 22px;
+            background: #fff;
+            border: 1px solid #dce5e4;
+            border-radius: 12px;
+            box-shadow: 0 6px 18px rgba(29, 65, 73, .07);
+        }
+        .math-card p { margin: 0; font-size: 1.05rem; }
+        .value { color: #d65b2b; font-size: 1.2rem; }
+        .graphic {
+            display: flex;
+            align-items: end;
+            gap: 10px;
+            height: 110px;
+            margin: 22px 0 14px;
+            padding: 12px 14px 0;
+            background: linear-gradient(to top, #e6f1ef 1px, transparent 1px) 0 0 / 100% 25%;
+            border-bottom: 2px solid #81a8a2;
+        }
+        .bar { width: 42px; min-height: 8px; height: var(--height); background: #2f8f83; border-radius: 6px 6px 0 0; }
+        .bar.accent { background: #e7834b; }
+        .formula { color: #3e5b61; font-family: Georgia, serif; font-size: 1.15rem; }
+        .explanation { margin: 0; color: #65757b; font-size: .92rem; }
+        @media (max-width: 680px) { .math-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>  <!-- head 영역 끝 -->
+<body>  <!-- 화면에 표시할 내용을 작성하는 영역입니다. -->
+
+<h1>Math 객체 속성</h1>  <!-- Math 객체의 속성을 소개하는 제목입니다. -->
+<p class="intro">각 카드의 그래픽은 상수의 크기나 수학적 의미를 한눈에 보여줍니다.</p>
+
+<div class="math-grid">
+    <article class="math-card">
+        <p>Euler's 상수(E) : <b id="ca" class="value"></b></p>
+        <div class="graphic"><span class="bar accent" style="--height: 82%"></span><span class="bar" style="--height: 42%"></span></div>
+        <div class="formula">e ≈ 2.71828</div>
+        <p class="explanation">자연로그의 밑으로 사용되는 특별한 상수입니다. 증가와 변화율을 계산할 때 자주 등장합니다.</p>
+    </article>
+    <article class="math-card">
+        <p>자연로그2 LN2 : <b id="cca" class="value"></b></p>
+        <div class="graphic"><span class="bar accent" style="--height: 28%"></span><span class="bar" style="--height: 14%"></span></div>
+        <div class="formula">ln(2) ≈ 0.69315</div>
+        <p class="explanation">자연로그에서 2를 입력했을 때의 결과입니다. 1보다 작으므로 막대도 낮게 표시됩니다.</p>
+    </article>
+    <article class="math-card">
+        <p>자연로그10 LN10 : <b id="cnct" class="value"></b></p>
+        <div class="graphic"><span class="bar accent" style="--height: 70%"></span><span class="bar" style="--height: 35%"></span></div>
+        <div class="formula">ln(10) ≈ 2.30259</div>
+        <p class="explanation">자연로그에서 10을 입력한 값이며, 지수와 로그를 연결하는 기준으로 활용됩니다.</p>
+    </article>
+    <article class="math-card">
+        <p>2진로그E(LOG2E) : <b id="ido" class="value"></b></p>
+        <div class="graphic"><span class="bar accent" style="--height: 48%"></span><span class="bar" style="--height: 24%"></span></div>
+        <div class="formula">log₂(e) ≈ 1.4427</div>
+        <p class="explanation">자연로그의 밑 e를 2를 밑으로 하는 로그로 바꾼 값입니다.</p>
+    </article>
+    <article class="math-card">
+        <p>10진로그E(LOG10E): <b id="fxd" class="value"></b></p>
+        <div class="graphic"><span class="bar accent" style="--height: 15%"></span><span class="bar" style="--height: 8%"></span></div>
+        <div class="formula">log₁₀(e) ≈ 0.4343</div>
+        <p class="explanation">e를 10을 밑으로 하는 로그로 표현한 값이며 1보다 작습니다.</p>
+    </article>
+    <article class="math-card">
+        <p>PI : <b id="prc" class="value"></b></p>
+        <div class="graphic"><span class="bar accent" style="--height: 94%"></span><span class="bar" style="--height: 47%"></span></div>
+        <div class="formula">π ≈ 3.14159</div>
+        <p class="explanation">원의 둘레를 지름으로 나눈 값입니다. 원과 관련된 계산에 사용됩니다.</p>
+    </article>
+    <article class="math-card">
+        <p>SQRT1_2 : <b id="str" class="value"></b></p>
+        <div class="graphic"><span class="bar accent" style="--height: 23%"></span><span class="bar" style="--height: 12%"></span></div>
+        <div class="formula">√(1/2) ≈ 0.7071</div>
+        <p class="explanation">1을 2로 나눈 값의 제곱근입니다. 1보다 작아 길이가 짧게 표시됩니다.</p>
+    </article>
+    <article class="math-card">
+        <p>SQRT2 : <b id="vlf" class="value"></b></p>
+        <div class="graphic"><span class="bar accent" style="--height: 42%"></span><span class="bar" style="--height: 21%"></span></div>
+        <div class="formula">√2 ≈ 1.4142</div>
+        <p class="explanation">제곱해서 2가 되는 양의 수입니다. 대각선과 직각삼각형 계산에 자주 사용됩니다.</p>
+    </article>
+</div>
+
+<script>  <!-- JavaScript 코드를 작성하는 영역의 시작입니다. -->
+
+    document.getElementById("ca").innerHTML = Math.E;  // id가 ca인 요소에 오일러 상수 약 2.71828을 출력합니다.
+    document.getElementById("cca").innerHTML = Math.LN2;  // id가 cca인 요소에 자연로그 2의 값 약 0.69315를 출력합니다.
+    document.getElementById("cnct").innerHTML = Math.LN10;  // id가 cnct인 요소에 자연로그 10의 값 약 2.30259를 출력합니다.
+    document.getElementById("ido").innerHTML = Math.LOG2E;  // id가 ido인 요소에 E의 밑이 2인 로그값 약 1.4427을 출력합니다.
+    document.getElementById("fxd").innerHTML = Math.LOG10E;  // id가 fxd인 요소에 E의 밑이 10인 로그값 약 0.4343을 출력합니다.
+    document.getElementById("prc").innerHTML = Math.PI;  // id가 prc인 요소에 원주율 약 3.14159를 출력합니다.
+    document.getElementById("str").innerHTML = Math.SQRT1_2;  // id가 str인 요소에 1/√2의 값 약 0.7071을 출력합니다.
+    document.getElementById("vlf").innerHTML = Math.SQRT2;  // id가 vlf인 요소에 √2의 값 약 1.4142를 출력합니다.
+
+</script>  <!-- JavaScript 코드 영역 끝 -->
+</body>  <!-- body 영역 끝 -->
+</html>  <!-- HTML 문서 끝 -->
