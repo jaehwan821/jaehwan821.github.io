@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -5,16 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>컴퓨터 보안 및 수업 정보</title>
     <style>
-        /* 기본 스타일 초기화 */
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { 
-            font-family: 'Pretendard', -apple-system, sans-serif; 
-            line-height: 1.6; 
-            color: #333; 
+
+        body {
+            font-family: 'Pretendard', -apple-system, sans-serif;
+            line-height: 1.6;
+            color: #333;
             background-color: #f4f7f6;
         }
-        
-        /* 헤더 및 내비게이션 */
+
         header {
             background-color: #2c3e50;
             color: white;
@@ -25,22 +25,27 @@
             z-index: 1000;
         }
 
-        /* 섹션 공통 스타일 */
         section {
             padding: 40px 20px;
             max-width: 800px;
             margin: auto;
             border-bottom: 1px solid #ddd;
         }
-        h2 { color: #2980b9; margin-bottom: 15px; border-left: 5px solid #2980b9; padding-left: 10px; }
 
-        /* 예제 목록 스타일 (추가됨) */
+        h2 {
+            color: #2980b9;
+            margin-bottom: 15px;
+            border-left: 5px solid #2980b9;
+            padding-left: 10px;
+        }
+
         .example-container {
             display: flex;
             gap: 20px;
             flex-wrap: wrap;
             margin-top: 15px;
         }
+
         .example-box {
             flex: 1;
             min-width: 250px;
@@ -50,36 +55,41 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.05);
             border-top: 3px solid #2980b9;
         }
+
         .example-box h3 {
             font-size: 1.1rem;
             margin-bottom: 10px;
             color: #333;
         }
+
         .example-box ul {
             list-style: none;
             padding: 0;
         }
+
         .example-box ul li {
             margin-bottom: 8px;
             font-size: 0.95rem;
         }
+
         .example-box ul li a {
             text-decoration: none;
             color: #555;
             transition: color 0.2s;
         }
+
         .example-box ul li a:hover {
             color: #2980b9;
             text-decoration: underline;
         }
 
-        /* 갤러리 그리드 (모바일 대응) */
         .gallery-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
             gap: 10px;
             margin-top: 15px;
         }
+
         .gallery-item {
             background: #ddd;
             aspect-ratio: 1 / 1;
@@ -91,9 +101,13 @@
             color: #666;
             overflow: hidden;
         }
-        .gallery-item img { width: 100%; height: 100%; object-fit: cover; }
 
-        /* 푸터 스타일 */
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
         footer {
             background: #333;
             color: white;
@@ -101,9 +115,9 @@
             text-align: center;
             font-size: 0.9rem;
         }
+
         .contact-info { margin-bottom: 10px; }
-        
-        /* 버튼/링크 스타일 */
+
         .btn {
             display: inline-block;
             background: #2980b9;
@@ -115,6 +129,7 @@
         }
     </style>
 </head>
+
 <body>
 
     <header>
@@ -123,8 +138,15 @@
 
     <section id="security">
         <h2>01. 컴퓨터 보안 소개</h2>
-        <p>컴퓨터 보안은 정보 자산을 불법적인 접근, 변조, 파괴로부터 보호하는 기술입니다. 현대 사회에서 <strong>기밀성, 무결성, 가용성</strong>은 보안의 핵심 3요소로 불립니다.</p>
-        <p style="margin-top:10px;">스마트폰 환경에서는 개인정보 유출 방지를 위한 2단계 인증과 암호화가 매우 중요합니다.</p>
+        <p>
+            컴퓨터 보안은 정보 자산을 불법적인 접근, 변조, 파괴로부터
+            보호하는 기술입니다. 현대 사회에서
+            <strong>기밀성, 무결성, 가용성</strong>은 보안의 핵심 3요소로 불립니다.
+        </p>
+        <p style="margin-top:10px;">
+            스마트폰 환경에서는 개인정보 유출 방지를 위한
+            2단계 인증과 암호화가 매우 중요합니다.
+        </p>
     </section>
 
     <section id="class-info">
@@ -140,7 +162,9 @@
 
     <section id="examples">
         <h2>03. 실습 예제 목록</h2>
+
         <div class="example-container">
+
             <div class="example-box">
                 <h3>HTML 예제</h3>
                 <ul>
@@ -154,11 +178,12 @@
                     <li><a href="html/form.html">• 입력 양식 만들기 (form)</a></li>
                 </ul>
             </div>
+
             <div class="example-box">
                 <h3>CSS 예제</h3>
                 <ul>
                     <li><a href="css/selectors.html">• CSS3 선택자 가이드</a></li>
-                    <li><a href="css/typ.html">• 텍스트 스타일링 & 타이포그래피 (color, font)</a></li>
+                    <li><a href="css/typ.html">• 텍스트 스타일링 & 타이포그래피</a></li>
                     <li><a href="css/box-model.html">• 박스 모델 (margin, padding)</a></li>
                     <li><a href="css/margin-padding.html">• Margin & Padding 실습</a></li>
                     <li><a href="css/position.html">• CSS Position 실습</a></li>
@@ -167,6 +192,7 @@
                     <li><a href="css/responsive.html">• 반응형 웹 미디어 쿼리</a></li>
                 </ul>
             </div>
+
             <div class="example-box">
                 <h3>CSS 레이아웃 예제 (교재 6장)</h3>
                 <ul>
@@ -181,29 +207,40 @@
                     <li><a href="cssDsgn/Navigation.html">• 예제 6-14 Navigation</a></li>
                 </ul>
             </div>
-           <div class="example-box">
-                 <h3>CSS 애니메이션 및 트랜스폼 예제 (교재 7장)</h3>
-                 <ul>
-                    <li><a href="AI_WEB/CSSANIME.html">• 예제 6-1 display 속성</a></li>
-                    <li><a href="AI_WEB/Transform - matrix().html">• 예제 6-2 마진과 패딩</a></li>
-                    <li><a href="AI_WEB/Transform - rotate().html">• 예제 6-3 위치 설정: static</a></li>
-                    <li><a href="AI_WEB/Transform - scale().html">• 예제 6-8 혼합 위치 설정</a></li>
-                    <li><a href="AI_WEB/Transform - skew().html">• 예제 6-9 z-Index</a></li>
-                    <li><a href="AI_WEB/Transform - translate().html">• 예제 6-10 투명성(Opacity)</a></li>
-                    <li><a href="AI_WEB/Transform3D - translate().html">• 예제 6-11 Overflow</a></li>
-                    <li><a href="AI_WEB/Transition 효과 버튼.html">• 예제 6-12 Float and Clear</a></li>
-                    <li><a href="rotate3d() 3차원 회전 예제.html">• 예제 6-14 Navigation</a></li>
+
+            <div class="example-box">
+                <h3>CSS 애니메이션 및 트랜스폼 예제 (교재 7장)</h3>
+                <ul>
+                    <li><a href="AI_WEB/CSSANIME.html">• CSS 애니메이션</a></li>
+                    <li><a href="AI_WEB/Transform - matrix().html">• Transform Matrix</a></li>
+                    <li><a href="AI_WEB/Transform - rotate().html">• Transform Rotate</a></li>
+                    <li><a href="AI_WEB/Transform - scale().html">• Transform Scale</a></li>
+                    <li><a href="AI_WEB/Transform - skew().html">• Transform Skew</a></li>
+                    <li><a href="AI_WEB/Transform - translate().html">• Transform Translate</a></li>
+                    <li><a href="AI_WEB/Transform3D - translate().html">• Transform 3D</a></li>
+                    <li><a href="AI_WEB/Transition 효과 버튼.html">• Transition 효과 버튼</a></li>
+                    <li><a href="rotate3d() 3차원 회전 예제.html">• 3차원 회전 예제</a></li>
                 </ul>
-           </div>
-                 <div class="example-box">
-                     <h3>JavaScript 학습 문서</h3>
-                     <ul>
-                      <li><a href="javascript/mathMethod.html">• Math 객체 속성 시각화</a></li>
-                      <li><a href="javascript/mathHethod01.html">• Math 메소드 그래픽 애니메이션</a></li>
-                      <li><a href="javascript/strmethod.html">• String 속성과 메소드 설명</a></li>
-                      <li><a href="test/git.html">• Git 개념과 명령어 안내</a></li>
-                     </ul>
-                 </div>
+            </div>
+
+            <div class="example-box">
+                <h3>JavaScript 학습 문서</h3>
+                <ul>
+                    <li><a href="javascript/mathMethod.html">• Math 객체 속성 시각화</a></li>
+                    <li><a href="javascript/mathHethod01.html">• Math 메소드 그래픽 애니메이션</a></li>
+                    <li><a href="javascript/strmethod.html">• String 속성과 메소드 설명</a></li>
+                    <li><a href="test/git.html">• Git 개념과 명령어 안내</a></li>
+
+                    <!-- 새로 추가한 JavaScript DOM 링크 -->
+                    <li>
+                        <a href="javascript-dom.html">
+                            • JavaScript DOM 학습하기
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
     </section>
 
     <section id="gallery">
@@ -229,3 +266,4 @@
 
 </body>
 </html>
+```
