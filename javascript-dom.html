@@ -1,27 +1,1056 @@
 <!DOCTYPE html>
-<html>
-<head>  
-    <link rel="stylesheet" href="style.css">  
-    <meta charset="utf-8">  
-    <title>예제10-1요소찾기(Find Element)</title>  
-    <script>    
-        function changeTag() {      
-            document.getElementsByTagName("h1")[0].innerHTML = '첫번째 h1: getElementsByTagName';    
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>예제10 요소찾기 + 속성변경 + 노드 추가/삭제</title>
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            padding: 40px 16px;
+            font-family: 'Noto Sans KR', 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+            background: linear-gradient(135deg, #e0e7ff 0%, #f3e8ff 50%, #ffe4f1 100%);
+            min-height: 100vh;
+            color: #2d3142;
         }
-        function changeId() {      
-            document.getElementById('txt').innerHTML = 'getElementById';    
+
+        .container {
+            max-width: 720px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
         }
-        function changeCls() {      
-            document.getElementsByClassName('cls')[0].innerHTML = 'getElementsByClassName';    
-        }  
+
+        .card {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 32px;
+            box-shadow: 0 10px 30px rgba(80, 70, 160, 0.15);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 40px rgba(80, 70, 160, 0.22);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 14px;
+            margin-bottom: 12px;
+            font-size: 13px;
+            font-weight: 700;
+            color: #fff;
+            background: linear-gradient(90deg, #6366f1, #a855f7);
+            border-radius: 999px;
+        }
+
+        h1 { margin: 8px 0 16px; font-size: 28px; }
+        h3 { margin: 8px 0 16px; font-size: 24px; }
+        h4 { margin: 16px 0 8px; font-size: 16px; color: #6b6f8d; }
+
+        h2 {
+            margin: 12px 0;
+            padding: 12px 16px;
+            font-size: 18px;
+            border-radius: 12px;
+            border: 2px dashed #d4d4f0;
+            transition: all 0.3s ease;
+        }
+
+        p { line-height: 1.7; }
+
+        #txt {
+            padding: 14px 18px;
+            background: #f5f6ff;
+            border-left: 5px solid #6366f1;
+            border-radius: 8px;
+        }
+
+        .img-box {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            background: #faf5ff;
+            border-radius: 14px;
+        }
+        .img-box img {
+            border-radius: 14px;
+            object-fit: cover;
+            background: #e9e5ff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease;
+        }
+        .img-box img:hover { transform: scale(1.08) rotate(-2deg); }
+
+        /* 예제 10-3 리스트 */
+        #myList, #treeList {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        #myList li, #treeList li {
+            padding: 12px 18px;
+            background: #ecfdf5;
+            border-left: 5px solid #10b981;
+            border-radius: 10px;
+            font-weight: 600;
+            animation: pop 0.3s ease;
+        }
+
+        /* 예제 10-4 */
+        #treeList li {
+            background: #fffbeb;
+            border-left-color: #f59e0b;
+        }
+        .amber p {
+            margin: 10px 0;
+            padding: 10px 16px;
+            background: #fffbeb;
+            border-radius: 10px;
+        }
+        .amber b {
+            display: inline-block;
+            min-width: 48px;
+            padding: 2px 10px;
+            color: #b45309;
+            background: #fef3c7;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .fruit-input {
+            width: 100%;
+            margin-top: 20px;
+            padding: 12px 16px;
+            font-size: 15px;
+            font-family: inherit;
+            border: 2px solid #d1fae5;
+            border-radius: 12px;
+            outline: none;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        .fruit-input:focus {
+            border-color: #10b981;
+            box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.2);
+        }
+        @keyframes pop {
+            from { opacity: 0; transform: translateX(-16px); }
+            to   { opacity: 1; transform: translateX(0); }
+        }
+
+        .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        input[type="button"] {
+            padding: 11px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(99, 102, 241, 0.35);
+            transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+        }
+        input[type="button"]:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.1);
+            box-shadow: 0 8px 16px rgba(99, 102, 241, 0.45);
+        }
+        input[type="button"]:active { transform: translateY(0); }
+
+        .pink input[type="button"] {
+            background: linear-gradient(135deg, #ec4899, #f97316);
+            box-shadow: 0 4px 10px rgba(236, 72, 153, 0.35);
+        }
+        .pink input[type="button"]:hover { box-shadow: 0 8px 16px rgba(236, 72, 153, 0.45); }
+
+        .green input[type="button"] {
+            background: linear-gradient(135deg, #10b981, #06b6d4);
+            box-shadow: 0 4px 10px rgba(16, 185, 129, 0.35);
+        }
+        .green input[type="button"]:hover { box-shadow: 0 8px 16px rgba(16, 185, 129, 0.45); }
+
+        .amber input[type="button"] {
+            background: linear-gradient(135deg, #f59e0b, #ef4444);
+            box-shadow: 0 4px 10px rgba(245, 158, 11, 0.35);
+        }
+        .amber input[type="button"]:hover { box-shadow: 0 8px 16px rgba(245, 158, 11, 0.45); }
+
+        /* 예제 10-16 */
+        .navy p {
+            margin: 10px 0;
+            padding: 14px 18px;
+            font-size: 16px;
+            background: #f0f7fc;
+            border-radius: 10px;
+        }
+        .navy b {
+            display: inline-block;
+            min-width: 40px;
+            padding: 2px 12px;
+            font-size: 20px;
+            color: #fff;
+            background: #1769aa;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .navy #actionBtn {
+            padding: 14px 28px;
+            font-size: 15px;
+            font-weight: 700;
+            font-family: inherit;
+            color: #fff;
+            background: #1769aa;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(23, 105, 170, 0.4);
+            transition: background-color 0.15s ease, transform 0.1s ease;
+        }
+        .navy #actionBtn:hover { filter: brightness(1.1); }
+        .navy #actionBtn:active { transform: scale(0.96); }
+
+        /* 예제 10-15 */
+        .fuchsia p {
+            margin: 10px 0;
+            padding: 10px 16px;
+            background: #fdf4ff;
+            border-radius: 10px;
+            word-break: break-all;
+        }
+        .fuchsia b {
+            display: inline-block;
+            min-width: 60px;
+            padding: 2px 10px;
+            color: #a21caf;
+            background: #fae8ff;
+            border-radius: 8px;
+        }
+        .fuchsia button {
+            padding: 11px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            font-family: inherit;
+            color: #fff;
+            background: linear-gradient(135deg, #d946ef, #c026d3);
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(217, 70, 239, 0.35);
+            transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+        }
+        .fuchsia button:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.1);
+            box-shadow: 0 8px 16px rgba(217, 70, 239, 0.45);
+        }
+        .fuchsia button:active { transform: translateY(0); }
+
+        /* 예제 10-14 */
+        .blue p {
+            margin: 10px 0;
+            padding: 10px 16px;
+            background: #eff6ff;
+            border-radius: 10px;
+            word-break: break-all;
+        }
+        .blue b {
+            display: inline-block;
+            min-width: 60px;
+            padding: 2px 10px;
+            color: #1d4ed8;
+            background: #dbeafe;
+            border-radius: 8px;
+        }
+        .blue button {
+            padding: 11px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            font-family: inherit;
+            color: #fff;
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(37, 99, 235, 0.35);
+            transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+        }
+        .blue button:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.1);
+            box-shadow: 0 8px 16px rgba(37, 99, 235, 0.45);
+        }
+        .blue button:active { transform: translateY(0); }
+
+        /* 예제 10-13 */
+        .cyan p {
+            margin: 10px 0;
+            padding: 10px 16px;
+            background: #ecfeff;
+            border-radius: 10px;
+        }
+        .cyan b {
+            display: inline-block;
+            min-width: 90px;
+            padding: 2px 10px;
+            color: #0e7490;
+            background: #cffafe;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .cyan button {
+            padding: 11px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            font-family: inherit;
+            color: #fff;
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(6, 182, 212, 0.35);
+            transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+        }
+        .cyan button:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.08);
+            box-shadow: 0 8px 16px rgba(6, 182, 212, 0.45);
+        }
+        .cyan button:active { transform: translateY(0); }
+
+        /* 예제 10-12 */
+        .orange input[type="button"],
+        .orange button {
+            padding: 11px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            font-family: inherit;
+            color: #fff;
+            background: linear-gradient(135deg, #f97316, #fb923c);
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(249, 115, 22, 0.35);
+            transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+        }
+        .orange button:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.08);
+            box-shadow: 0 8px 16px rgba(249, 115, 22, 0.45);
+        }
+        .orange button:active { transform: translateY(0); }
+        .orange #winStatus {
+            min-height: 24px;
+            margin: 16px 0 0;
+            padding: 12px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #9a3412;
+            background: #fff7ed;
+            border-left: 5px solid #f97316;
+            border-radius: 10px;
+        }
+
+        /* 예제 10-11 */
+        .stone #winSize {
+            padding: 16px 20px;
+            font-weight: 600;
+            color: #44403c;
+            background: #fafaf9;
+            border-left: 5px solid #78716c;
+            border-radius: 10px;
+        }
+        .stone #winProps {
+            max-height: 260px;
+            overflow-y: auto;
+            padding: 8px 16px;
+            font-family: 'Consolas', 'D2Coding', 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.8;
+            color: #292524;
+            background: #f5f5f4;
+            border: 1px solid #e7e5e4;
+            border-radius: 12px;
+        }
+        .stone #winProps div { border-bottom: 1px dashed #e7e5e4; }
+        .stone #winProps div:last-child { border-bottom: none; }
+        .stone .count { font-size: 13px; color: #78716c; margin: 8px 0; }
+
+        /* 예제 10-10 */
+        .teal input[type="text"] {
+            width: 100%;
+            padding: 14px 18px;
+            font-size: 16px;
+            font-family: inherit;
+            border: 2px solid #99f6e4;
+            border-radius: 12px;
+            outline: none;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        .teal input[type="text"]:focus {
+            border-color: #14b8a6;
+            box-shadow: 0 0 0 4px rgba(20, 184, 166, 0.2);
+        }
+        .teal #idGuide {
+            min-height: 24px;
+            margin: 12px 0 0;
+            color: #0f766e !important;
+            font-weight: 600;
+        }
+
+        /* 예제 10-9 */
+        .rose h4 { color: #9f1239; }
+        .rose #mouseDownBox {
+            margin: 12px 0 0;
+            padding: 36px 20px;
+            font-size: 22px;
+            background: #fff1f2;
+            border-radius: 16px;
+            cursor: pointer;
+            user-select: none;
+            transition: background 0.2s ease, transform 0.1s ease;
+        }
+        .rose #mouseDownBox:active {
+            background: #ffe4e6;
+            transform: scale(0.96);
+        }
+
+        /* 예제 10-8 */
+        .slate h4 { color: #475569; }
+        .slate #mouse {
+            margin: 12px 0 0;
+            padding: 36px 20px;
+            font-size: 22px;
+            background: #f1f5f9;
+            border-radius: 16px;
+            cursor: pointer;
+            user-select: none;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+        .slate #mouse:hover {
+            background: #e0e7ff;
+            transform: scale(1.03);
+        }
+
+        /* 예제 10-7 */
+        .violet #changeGuide {
+            padding: 14px 18px;
+            font-size: 15px;
+            line-height: 1.6;
+            color: #86198f;
+            background: #fdf4ff;
+            border-radius: 12px;
+        }
+        .violet input[type="text"] {
+            width: 100%;
+            margin-top: 8px;
+            padding: 14px 18px;
+            font-size: 16px;
+            font-family: inherit;
+            text-align: center;
+            letter-spacing: 1px;
+            border: 2px solid #f5d0fe;
+            border-radius: 12px;
+            outline: none;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        .violet input[type="text"]:focus {
+            border-color: #d946ef;
+            box-shadow: 0 0 0 4px rgba(217, 70, 239, 0.2);
+        }
+
+        /* 예제 10-6 */
+        .lime #cook {
+            margin: 16px 0 0;
+            padding: 18px 20px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #3f6212;
+            background: #f7fee7;
+            border-left: 5px solid #84cc16;
+            border-radius: 10px;
+            animation: pop 0.4s ease;
+        }
+
+        /* 예제 10-5 */
+        .sky input[type="button"],
+        .sky button {
+            padding: 11px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            font-family: inherit;
+            color: #fff;
+            background: linear-gradient(135deg, #0ea5e9, #3b82f6);
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(14, 165, 233, 0.35);
+            transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+        }
+        .sky input[type="button"]:hover,
+        .sky button:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.1);
+            box-shadow: 0 8px 16px rgba(14, 165, 233, 0.45);
+        }
+        .sky button:active { transform: translateY(0); }
+        .sky h3 {
+            padding: 14px 18px;
+            background: #f0f9ff;
+            border-radius: 12px;
+        }
+        .sky h4 {
+            display: inline-block;
+            margin: 8px 0;
+            padding: 10px 20px;
+            color: #0369a1;
+            background: #e0f2fe;
+            border: 2px dashed #7dd3fc;
+            border-radius: 12px;
+            cursor: pointer;
+            user-select: none;
+            transition: background 0.2s ease, transform 0.15s ease;
+        }
+        .sky h4:hover { background: #bae6fd; transform: scale(1.03); }
+    </style>
+
+    <script>
+        /* ===== 예제 10-1: 요소 찾기 ===== */
+        function changeTag() {
+            document.getElementsByTagName("h1")[0].innerHTML = '첫번째 h1: getElementsByTagName';
+        }
+        function changeId() {
+            document.getElementById('txt').innerHTML = 'getElementById';
+        }
+        function changeCls() {
+            document.getElementsByClassName('cls')[0].innerHTML = 'getElementsByClassName';
+        }
+
+        /* ===== 예제 10-2: 속성 변경 ===== */
+        function changeImg() {
+            document.getElementById("img").src = 'images/aisoftware.png';
+        }
+        function changeCss() {
+            document.getElementById("cssTxt").style.color = "red";
+        }
+        function changeSeta() {
+            document.getElementById('set').setAttribute("style", "background-color:cyan");
+        }
+
+        /* ===== 예제 10-3: 노드 추가/삭제 ===== */
+        var fruits = ["오렌지", "포도", "딸기", "수박", "복숭아", "키위", "망고", "체리", "레몬", "파인애플", "참외", "배", "감", "귤", "자두"];
+
+        // 입력창에 쓴 과일을 추가 (비어 있으면 랜덤)
+        function addItem() {
+            var input = document.getElementById("fruitInput");
+            var name = input.value.trim();
+            if (name === "") {
+                name = fruits[Math.floor(Math.random() * fruits.length)];
+            }
+            appendFruit(name);
+            input.value = "";
+            input.focus();
+        }
+
+        // 목록에서 랜덤으로 추가
+        function addRandom() {
+            var name = fruits[Math.floor(Math.random() * fruits.length)];
+            appendFruit(name);
+        }
+
+        function appendFruit(name) {
+            var add = document.createElement("li");
+            var cnode = document.createTextNode(name);
+            add.appendChild(cnode);
+            document.getElementById("myList").appendChild(add);
+        }
+
+        function removeItem() {
+            var list = document.getElementById("myList");
+            var rnode = list.lastElementChild;
+            if (rnode) list.removeChild(rnode);
+        }
+
+        /* ===== 예제 10-16: addEventListener ===== */
+        let clickCount = 0;
+
+        // 기능 1: 데이터 상태 갱신 (카운터 증가)
+        function updateCounter() {
+            clickCount++;
+            document.getElementById("counter").textContent = clickCount;
+        }
+
+        // 기능 2: UI 시각적 피드백 (버튼 배경색 잠깐 변경)
+        function applyVisualFeedback() {
+            const btn = document.getElementById("actionBtn");
+            btn.style.backgroundColor = "#27ae60";
+            setTimeout(() => {
+                btn.style.backgroundColor = "";
+            }, 150);
+        }
+
+        // 페이지 로드 시 다중 이벤트 바인딩
+        // (window.onload = ... 로 쓰면 10-6의 <body onload>를 덮어쓰므로 addEventListener 사용)
+        window.addEventListener("load", function () {
+            const btn = document.getElementById("actionBtn");
+            btn.addEventListener("click", updateCounter);
+            btn.addEventListener("click", applyVisualFeedback);
+        });
+
+        /* ===== 예제 10-15: navigator 객체 ===== */
+        function navInfo() {
+            var appCodeName = navigator.appCodeName;
+            var appVersion = navigator.appVersion;
+            var appName = navigator.appName;
+            var cookieEnabled = navigator.cookieEnabled;
+            var onLine = navigator.onLine;
+            var platform = navigator.platform;
+            var userAgent = navigator.userAgent;
+
+            document.getElementById("navCodeName").textContent = appCodeName;
+            document.getElementById("navName").textContent = appName;
+            document.getElementById("navVersion").textContent = appVersion;
+            document.getElementById("navCookie").textContent = cookieEnabled;
+            document.getElementById("navOnline").textContent = onLine;
+            document.getElementById("navPlatform").textContent = platform;
+            document.getElementById("navUA").textContent = userAgent;
+        }
+
+        /* ===== 예제 10-14: Location 객체 ===== */
+        function lct() {
+            var hf = location.href;
+            var hn = location.hostname;
+            var pn = location.pathname;
+            var pt = location.protocol;
+            var prt = location.port;
+
+            document.getElementById("locHref").textContent = hf;
+            document.getElementById("locHost").textContent = hn;
+            document.getElementById("locPath").textContent = pn;
+            document.getElementById("locProto").textContent = pt;
+            document.getElementById("locPort").textContent = prt;
+        }
+        function assgn() {
+            location.assign("https://w3schools.com/js/");
+        }
+
+        /* ===== 예제 10-13: Screen 객체 ===== */
+        function wH() {
+            var w = screen.width, h = screen.height;
+            document.getElementById("wh").textContent = "w:" + w + " h:" + h;
+        }
+        function aWh() {
+            var w = screen.availWidth, h = screen.availHeight;
+            document.getElementById("awh").textContent = "w:" + w + " h:" + h;
+        }
+        function cD() {
+            var c = screen.colorDepth;
+            document.getElementById("cd").textContent = "color:" + c;
+        }
+        function pD() {
+            var p = screen.pixelDepth;
+            document.getElementById("pd").textContent = "pixel:" + p;
+        }
+
+        /* ===== 예제 10-12: Window 메소드 ===== */
+        var myWindow;
+
+        function setWinStatus(msg) {
+            document.getElementById("winStatus").innerHTML = msg;
+        }
+
+        // 새 창이 열려 있는지 확인
+        function hasWin() {
+            if (!myWindow || myWindow.closed) {
+                setWinStatus("⚠️ 먼저 '새창열기'를 눌러 창을 열어주세요.");
+                return false;
+            }
+            return true;
+        }
+
+        function openWin() {
+            // window.open(URL, 이름, 속성)
+            myWindow = window.open("", "myWindow", "width=250,height=100");
+            if (!myWindow) {
+                setWinStatus("⚠️ 팝업이 차단되었습니다. 브라우저의 팝업 허용 후 다시 눌러주세요.");
+                return;
+            }
+            myWindow.document.write("공지사항");
+            setWinStatus("✅ 새 창이 열렸습니다. (250 x 100)");
+        }
+        function moveWin() {
+            if (!hasWin()) return;
+            myWindow.moveTo(600, 600);
+            setWinStatus("✅ 창을 (600, 600) 위치로 이동했습니다.");
+        }
+        function resizeWin() {
+            if (!hasWin()) return;
+            myWindow.resizeTo(600, 600);
+            setWinStatus("✅ 창 크기를 600 x 600으로 키웠습니다.");
+        }
+        function closeWin() {
+            if (!hasWin()) return;
+            myWindow.close();
+            setWinStatus("✅ 새 창을 닫았습니다.");
+        }
+
+        /* ===== 예제 10-10: onFocus & onBlur ===== */
+        function showGuide(el) {
+            document.getElementById("idGuide").innerHTML = "💡 영문, 숫자 조합 4~12자로 입력하세요.";
+            el.style.backgroundColor = "#e8f4f8";
+        }
+        function hideGuide(el) {
+            document.getElementById("idGuide").innerHTML = "";
+            el.style.backgroundColor = "white";
+        }
+
+        /* ===== 예제 10-9: onmousedown / onmouseup ===== */
+        function mouseDown() {
+            var target = document.getElementById("mouseDownBox");
+            target.innerHTML = "onMouseDown()";
+            target.style.border = "2px solid blue";
+        }
+
+        function mouseUp() {
+            var target = document.getElementById("mouseDownBox");
+            target.innerHTML = "onMouseUp()";
+            target.style.border = "2px solid red";
+        }
+
+        /* ===== 예제 10-8: onmouseover / onmouseout ===== */
+        function mouseOver() {
+            var target = document.getElementById("mouse");
+            target.innerHTML = "onMouseOut()";
+            target.style.border = "2px solid blue";
+        }
+
+        function mouseOut() {
+            var target = document.getElementById("mouse");
+            target.innerHTML = "onMouseOver()";
+            target.style.border = "2px solid red";
+        }
+
+        /* ===== 예제 10-7: onchange ===== */
+        function checkInput() {
+            var x = document.getElementById("inputTxt").value;
+            document.getElementById("inputTxt").value = x.toUpperCase();  // 대문자로 변환
+            var y = x.length;  // 입력된 문자의 길이 계산
+
+            if (y < 10) {
+                alert(y + "자 입력됨. 10자 이상 입력하세요!");
+            } else {
+                alert("올바른 입력입니다.");
+            }
+        }
+
+        /* ===== 예제 10-6: onLoad ===== */
+        function checkCookies() {
+            var text = "";
+
+            // 브라우저의 쿠키 활성화 여부 확인 (읽기 전용 속성이므로 강제 설정/해제 불가)
+            if (navigator.cookieEnabled) {
+                text = "브라우저의 쿠키 기능이 설정되어 있습니다.";
+            } else {
+                text = "브라우저의 쿠키 기능이 꺼져 있습니다.";
+            }
+
+            document.getElementById("cook").innerHTML = text;
+
+            /*
+              [참고: 자바스크립트를 통한 쿠키 제어 주석문 코드]
+              - 쿠키 생성: document.cookie = "user=Park; max-age=60; path=/";
+              - 쿠키 삭제: document.cookie = "user=; max-age=0; path=/";
+            */
+        }
+
+        /* ===== 예제 10-5: onClick ===== */
+        function changeText() {
+            document.getElementById("clickTitle").innerHTML = "🎉 클릭 성공! input 버튼이 작동했어요";
+        }
+        function changeButton() {
+            document.getElementById("bttn").innerHTML = "버튼을 눌렀군요!";
+        }
+
+        /* ===== 예제 10-4: 노드 트리 ===== */
+        function showNext() {
+            let elem = document.getElementById("one").nextElementSibling;
+            document.getElementById("next").innerHTML = elem ? elem.innerHTML : "없음";
+        }
+
+        function showPrevious() {
+            let elem = document.getElementById("two").previousElementSibling;
+            document.getElementById("prev").innerHTML = elem ? elem.innerHTML : "없음";
+        }
+
+        function showChild() {
+            let list = document.getElementById("treeList");
+            document.getElementById("firstC").innerHTML = list.firstElementChild.innerHTML;
+            document.getElementById("lastC").innerHTML = list.lastElementChild.innerHTML;
+        }
     </script>
 </head>
-<body id="main">  
-    <h1 style="text-align:center;">요소찾기(Find Element)</h1>
-    <p id="txt">이 문장은 p 태그의 내용입니다.</p>  
-    <h1 class="cls" style="color:blue;">두 번째 h1 요소</h1>
-    <input type="button" id="bt1" value="change_title" onclick="changeTag();">  
-    <input type="button" id="bt2" value="change_id" onclick="changeId();">  
-    <input type="button" class="bt3" value="change_class" onclick="changeCls();">
+<body id="main" onload="checkCookies()">
+    <div class="container">
+
+        <!-- ===== 예제 10-1 영역 ===== -->
+        <section class="card">
+            <span class="badge">예제 10-1</span>
+            <h1 style="text-align:center;">요소찾기(Find Element)</h1>
+            <p id="txt">이 문장은 p 태그의 내용입니다.</p>
+            <h1 class="cls" style="color:blue;">두 번째 h1 요소</h1>
+
+            <div class="btn-group">
+                <input type="button" id="bt1" value="change_title" onclick="changeTag();">
+                <input type="button" id="bt2" value="change_id" onclick="changeId();">
+                <input type="button" class="bt3" value="change_class" onclick="changeCls();">
+            </div>
+        </section>
+
+        <!-- ===== 예제 10-2 영역 ===== -->
+        <section class="card pink">
+            <span class="badge" style="background:linear-gradient(90deg,#ec4899,#f97316);">예제 10-2</span>
+            <h1 style="text-align:center;">속성 변경(Attribute Change)</h1>
+
+            <div class="img-box">
+                <span>이미지 변경:</span>
+                <img id="img" src="images/ai.png" width="100" height="100" alt="ai 이미지">
+            </div>
+
+            <h2 id="cssTxt" style="color:blue">CSS 속성(색상) 변경</h2>
+            <h2 id="set" style="color:green">CSS setAttribute(attribute,value)</h2>
+
+            <div class="btn-group">
+                <input type="button" id="bt4" value="change_img" onclick="changeImg();">
+                <input type="button" id="bt5" value="change_style" onclick="changeCss();">
+                <input type="button" class="bt6" value="change_setAttribute" onclick="changeSeta();">
+            </div>
+        </section>
+
+        <!-- ===== 예제 10-3 영역 ===== -->
+        <section class="card green">
+            <span class="badge" style="background:linear-gradient(90deg,#10b981,#06b6d4);">예제 10-3</span>
+            <h3 style="text-align:center;">노드 추가/삭제(addChild/removeChild)</h3>
+            <h4>클릭버튼 추가/삭제</h4>
+
+            <ul id="myList">
+                <li>사과</li>
+                <li>바나나</li>
+            </ul>
+
+            <input type="text" id="fruitInput" class="fruit-input"
+                   placeholder="과일 이름 입력 (비워두면 랜덤)"
+                   onkeydown="if(event.key==='Enter') addItem();">
+
+            <div class="btn-group">
+                <input type="button" id="bt7" value="추가" onclick="addItem();">
+                <input type="button" id="bt9" value="랜덤 추가" onclick="addRandom();">
+                <input type="button" id="bt8" value="삭제" onclick="removeItem();">
+            </div>
+        </section>
+
+        <!-- ===== 예제 10-4 영역 ===== -->
+        <section class="card amber">
+            <span class="badge" style="background:linear-gradient(90deg,#f59e0b,#ef4444);">예제 10-4</span>
+            <h3 style="text-align:center;">노드의 구조(Tree)</h3>
+            <h4>Node Tree</h4>
+
+            <ul id="treeList">
+                <li id="one">사과</li>
+                <li id="two">바나나</li>
+            </ul>
+
+            <p>사과의 nextSibling은 <b id="next"></b>입니다.</p>
+            <p>바나나의 previousSibling은 <b id="prev"></b>입니다.</p>
+            <p>리스트의 First Child는 <b id="firstC"></b>입니다.</p>
+            <p>리스트의 Last Child는 <b id="lastC"></b>입니다.</p>
+
+            <div class="btn-group">
+                <input type="button" id="bt10" value="nextSibling" onclick="showNext();">
+                <input type="button" id="bt11" value="previousSibling" onclick="showPrevious();">
+                <input type="button" id="bt12" value="Tree" onclick="showChild();">
+            </div>
+        </section>
+
+        <!-- ===== 예제 10-5 영역 ===== -->
+        <section class="card sky">
+            <span class="badge" style="background:linear-gradient(90deg,#0ea5e9,#3b82f6);">예제 10-5</span>
+            <h3 id="clickTitle" style="text-align:center;">onClick()</h3>
+            <h4 onclick="this.innerHTML='✨ 짠! 제목도 클릭할 수 있어요'">Click me!!</h4>
+            <h3 id="bttn">Button</h3>
+
+            <div class="btn-group">
+                <input type="button" id="bt13" value="onClick" onclick="changeText();">
+                <button onclick="changeButton()">눌러봐!!</button>
+            </div>
+        </section>
+
+        <!-- ===== 예제 10-6 영역 ===== -->
+        <section class="card lime">
+            <span class="badge" style="background:linear-gradient(90deg,#84cc16,#eab308);">예제 10-6</span>
+            <h3 style="text-align:center;">onLoad()</h3>
+            <p id="cook">onLoad()</p>
+        </section>
+
+        <!-- ===== 예제 10-7 영역 ===== -->
+        <section class="card violet">
+            <span class="badge" style="background:linear-gradient(90deg,#d946ef,#8b5cf6);">예제 10-7</span>
+            <h3 style="text-align:center;">onchange() 이벤트 예제</h3>
+            <h3 id="changeGuide">소문자로 입력한 후, 엔터를 누르거나 포커스를 이동해 보세요.</h3>
+            <input type="text" id="inputTxt" size="20" placeholder="여기에 소문자로 입력하세요" onchange="checkInput();">
+        </section>
+
+        <!-- ===== 예제 10-8 영역 ===== -->
+        <section class="card slate">
+            <span class="badge" style="background:linear-gradient(90deg,#64748b,#334155);">예제 10-8</span>
+            <h3 style="text-align:center;">onmouseover / onmouseout</h3>
+            <h4>마우스를 올려놓으세요</h4>
+            <h3 id="mouse" style="text-align:center; border:2px solid red;"
+                onmouseover="mouseOver()" onmouseout="mouseOut()">
+                onMouseOver()
+            </h3>
+        </section>
+
+        <!-- ===== 예제 10-9 영역 ===== -->
+        <section class="card rose">
+            <span class="badge" style="background:linear-gradient(90deg,#f43f5e,#fb7185);">예제 10-9</span>
+            <h3 style="text-align:center;">onMouseDown() / onMouseUp()</h3>
+            <h4 id="pressGuide">마우스를 누르고 놓아보세요</h4>
+            <h3 id="mouseDownBox"
+                style="text-align:center; border:2px solid red;"
+                onmousedown="mouseDown()" onmouseup="mouseUp()">
+                onMouseUp()
+            </h3>
+        </section>
+
+        <!-- ===== 예제 10-10 영역 ===== -->
+        <section class="card teal">
+            <span class="badge" style="background:linear-gradient(90deg,#14b8a6,#0d9488);">예제 10-10</span>
+            <h3 style="text-align:center;">회원 가입 - 아이디 입력</h3>
+            <input id="userId" type="text" placeholder="아이디를 입력하세요" onFocus="showGuide(this)" onBlur="hideGuide(this)">
+            <p id="idGuide" style="color: #1769aa; font-size: 0.9rem;"></p>
+        </section>
+
+        <!-- ===== 예제 10-11 영역 ===== -->
+        <section class="card stone">
+            <span class="badge" style="background:linear-gradient(90deg,#a8a29e,#78716c);">예제 10-11</span>
+            <h3 style="text-align:center;">윈도우 객체</h3>
+            <p id="winSize"></p>
+            <p class="count" id="winCount"></p>
+            <div id="winProps"></div>
+
+            <script>
+                // 브라우저 윈도우 크기 (창 크기를 바꾸면 자동으로 갱신)
+                function showWindowSize() {
+                    var w = window.innerWidth;
+                    var h = window.innerHeight;
+                    document.getElementById("winSize").innerHTML =
+                        "브라우저 윈도우 크기 넓이: " + w + ", 높이: " + h + ".";
+                }
+                showWindowSize();
+                window.addEventListener("resize", showWindowSize);
+
+                // window 객체의 속성 목록 (document.write 대신 DOM으로 출력)
+                var box = document.getElementById("winProps");
+                var n = 0;
+                for (var i in window) {
+                    var row = document.createElement("div");
+                    row.appendChild(document.createTextNode(i));
+                    box.appendChild(row);
+                    n++;
+                }
+                document.getElementById("winCount").innerHTML = "window 객체의 속성/메서드: 총 " + n + "개";
+            </script>
+        </section>
+
+        <!-- ===== 예제 10-12 영역 ===== -->
+        <section class="card orange">
+            <span class="badge" style="background:linear-gradient(90deg,#f97316,#fb923c);">예제 10-12</span>
+            <h3 style="text-align:center;">윈도우 메소드</h3>
+
+            <div class="btn-group">
+                <button value="창열기" onclick="openWin()">새창열기</button>
+                <button value="창이동" onclick="moveWin()">창이동</button>
+                <button value="창크기" onclick="resizeWin()">창크게 보기</button>
+                <button value="창닫기" onclick="closeWin()">창닫기</button>
+            </div>
+
+            <p id="winStatus">'새창열기' 버튼을 눌러보세요.</p>
+        </section>
+
+        <!-- ===== 예제 10-13 영역 ===== -->
+        <section class="card cyan">
+            <span class="badge" style="background:linear-gradient(90deg,#06b6d4,#0891b2);">예제 10-13</span>
+            <h3 style="text-align:center;">Screen 객체</h3>
+
+            <p>Screen 크기는 <b id="wh"></b>입니다.</p>
+            <p>Screen 가능한 크기는 <b id="awh"></b>입니다.</p>
+            <p>Screen 색상은 <b id="cd"></b> 비트입니다.</p>
+            <p>Screen 픽셀은 <b id="pd"></b> 비트입니다.</p>
+
+            <div class="btn-group">
+                <button type="button" onclick="wH()">화면 크기</button>
+                <button type="button" onclick="aWh()">가용 크기</button>
+                <button type="button" onclick="cD()">칼라 깊이</button>
+                <button type="button" onclick="pD()">픽셀 깊이</button>
+            </div>
+        </section>
+
+        <!-- ===== 예제 10-14 영역 ===== -->
+        <section class="card blue">
+            <span class="badge" style="background:linear-gradient(90deg,#2563eb,#1d4ed8);">예제 10-14</span>
+            <h3 style="text-align:center;">Location 객체</h3>
+
+            <p>Location href: <b id="locHref"></b>입니다.</p>
+            <p>Location hostname: <b id="locHost"></b>입니다.</p>
+            <p>Location pathname: <b id="locPath"></b>입니다.</p>
+            <p>Location protocol: <b id="locProto"></b>입니다.</p>
+            <p>Location port: <b id="locPort"></b>입니다.</p>
+
+            <div class="btn-group">
+                <button type="button" onclick="lct()">Location 정보 보기</button>
+                <button type="button" onclick="assgn()">새 문서 열기</button>
+            </div>
+        </section>
+
+        <!-- ===== 예제 10-15 영역 ===== -->
+        <section class="card fuchsia">
+            <span class="badge" style="background:linear-gradient(90deg,#d946ef,#c026d3);">예제 10-15</span>
+            <h3 style="text-align:center;">navigator 객체</h3>
+
+            <p>navigator appCodeName: <b id="navCodeName"></b>입니다.</p>
+            <p>navigator appName: <b id="navName"></b>입니다.</p>
+            <p>navigator appVersion: <b id="navVersion"></b>입니다.</p>
+            <p>navigator cookieEnabled: <b id="navCookie"></b>입니다.</p>
+            <p>navigator onLine: <b id="navOnline"></b>입니다.</p>
+            <p>navigator platform: <b id="navPlatform"></b>입니다.</p>
+            <p>navigator userAgent: <b id="navUA"></b>입니다.</p>
+
+            <div class="btn-group">
+                <button type="button" onclick="navInfo()">navigator 정보 보기</button>
+            </div>
+        </section>
+
+        <!-- ===== 예제 10-16 영역 ===== -->
+        <section class="card navy">
+            <span class="badge" style="background:linear-gradient(90deg,#1769aa,#0c4a6e);">예제 10-16</span>
+            <h3 style="text-align:center;">실용형 다중 이벤트 리스너 실습</h3>
+            <p>버튼 클릭 횟수: <b id="counter">0</b>회</p>
+            <input id="actionBtn" type="button" value="통합 액션 버튼">
+        </section>
+
+    </div>
 </body>
 </html>
+
