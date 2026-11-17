@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark">
+<title>자바스크립트 삽입 방법</title>
+<link rel="stylesheet" href="theme.css">
+
+<!-- [방법 2] 내부 자바스크립트 (Head 영역) : 개발자 도구(F12) 콘솔에 출력됩니다 -->
+<script>
+  console.log("Head 영역의 내부 자바스크립트가 로드되었습니다.");
+</script>
+</head>
+<body>
+  <div class="wrap">
+    <a class="back" href="../index.html">&larr; 메인으로 돌아가기</a>
+
+    <div class="page-title">
+      <span class="ico" aria-hidden="true">&lt;/&gt;</span>
+      <h1 class="title">자바스크립트 삽입 방법</h1>
+    </div>
+
+    <section>
+      <h2>자바스크립트 핵심 정리</h2>
+      <div class="demo">
+        <ul>
+          <li>HTML은 내용, CSS는 디자인/구조, JS는 동작과 반응 담당</li>
+          <li>넷스케이프의 브렌던 아이크가 개발, ECMAScript 표준 사용</li>
+          <li>주요 특징: 컴파일 없이 브라우저에서 실행되는 인터프리터 언어</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <h2>방법 1. 외부 자바스크립트</h2>
+      <p class="text">&lt;head&gt; 내에 &lt;script src="파일경로"&gt;&lt;/script&gt;를 넣어, src 속성에 외부 JS 파일 경로를 지정하여 불러옵니다.</p>
+      <code>&lt;script src="예제8-2externjs.js"&gt;&lt;/script&gt;</code>
+    </section>
+
+    <section>
+      <h2>방법 2. 내부 자바스크립트 (Head)</h2>
+      <p class="text">&lt;head&gt; 태그 안에서 &lt;script&gt; 태그로 직접 작성합니다.</p>
+<pre>&lt;script&gt;
+  console.log("Head 영역의 내부 자바스크립트가 로드되었습니다.");
+&lt;/script&gt;</pre>
+    </section>
+
+    <section>
+      <h2>방법 3. 본문 자바스크립트 (Body)</h2>
+      <p class="text">&lt;body&gt; 태그 안쪽에 직접 &lt;script&gt;를 작성합니다. document.write()는 HTML 문서에 텍스트를 출력합니다.</p>
+      <div class="demo">
+        <script>
+          document.write("My First JavaScript Using AI (Body 스크립트 출력)");
+        </script>
+      </div>
+<pre>&lt;script&gt;
+  document.write("My First JavaScript Using AI (Body 스크립트 출력)");
+&lt;/script&gt;</pre>
+    </section>
+
+    <a class="back" href="../index.html">&larr; 메인으로 돌아가기</a>
+  </div>
+</body>
+</html>
