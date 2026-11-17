@@ -1,269 +1,626 @@
-```html
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>컴퓨터 보안 및 수업 정보</title>
+    <meta name="color-scheme" content="dark">
+    <title>My Security Web – 정보보안 개론</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&family=IBM+Plex+Sans+KR:wght@400;500;600&family=Noto+Serif+KR:wght@600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --bg: #0B1020;
+            --side: #080C1A;
+            --surface: #131A2E;
+            --surface-2: #1A2340;
+            --line: #263156;
+            --text: #E6EBF8;
+            --muted: #93A0C0;
+            --blue: #5B8CFF;
+            --teal: #2DD4BF;
+            --amber: #FBBF24;
+            --orange: #FF8A4C;
+            --pink: #F472B6;
+            --side-w: 272px;
+            --radius: 6px;
+            --sans: 'IBM Plex Sans KR', 'Pretendard', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+            --serif: 'Noto Serif KR', 'Batang', serif;
+            --mono: 'IBM Plex Mono', ui-monospace, Consolas, monospace;
+        }
+
         * { box-sizing: border-box; margin: 0; padding: 0; }
+        [hidden] { display: none !important; }
 
+        html { scroll-behavior: smooth; }
         body {
-            font-family: 'Pretendard', -apple-system, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background-color: #f4f7f6;
+            font-family: var(--sans);
+            line-height: 1.7;
+            color: var(--text);
+            background-color: var(--bg);
+            background-image:
+                radial-gradient(900px 520px at 88% -8%, rgba(91, 140, 255, 0.24), transparent 70%),
+                radial-gradient(700px 500px at 20% 105%, rgba(45, 212, 191, 0.14), transparent 70%),
+                radial-gradient(500px 400px at 100% 60%, rgba(244, 114, 182, 0.10), transparent 70%);
+            background-attachment: fixed;
         }
 
-        header {
-            background-color: #2c3e50;
-            color: white;
-            padding: 1rem;
-            text-align: center;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
+        a { color: inherit; }
+        :focus-visible { outline: 3px solid var(--amber); outline-offset: 2px; }
 
-        section {
-            padding: 40px 20px;
-            max-width: 800px;
-            margin: auto;
-            border-bottom: 1px solid #ddd;
-        }
-
-        h2 {
-            color: #2980b9;
-            margin-bottom: 15px;
-            border-left: 5px solid #2980b9;
-            padding-left: 10px;
-        }
-
-        .example-container {
+        /* ---------- Sidebar ---------- */
+        .side {
+            position: fixed;
+            inset: 0 auto 0 0;
+            width: var(--side-w);
+            background: var(--side);
+            border-right: 1px solid var(--line);
+            color: var(--muted);
             display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-            margin-top: 15px;
+            flex-direction: column;
+            padding: 28px 24px;
+            overflow-y: auto;
+            z-index: 100;
         }
 
-        .example-box {
-            flex: 1;
-            min-width: 250px;
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            border-top: 3px solid #2980b9;
-        }
-
-        .example-box h3 {
-            font-size: 1.1rem;
-            margin-bottom: 10px;
-            color: #333;
-        }
-
-        .example-box ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .example-box ul li {
-            margin-bottom: 8px;
-            font-size: 0.95rem;
-        }
-
-        .example-box ul li a {
+        .side-head { display: flex; align-items: center; justify-content: space-between; }
+        .brand {
+            font-family: var(--serif);
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: #fff;
             text-decoration: none;
-            color: #555;
-            transition: color 0.2s;
         }
-
-        .example-box ul li a:hover {
-            color: #2980b9;
-            text-decoration: underline;
-        }
-
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 10px;
-            margin-top: 15px;
-        }
-
-        .gallery-item {
-            background: #ddd;
-            aspect-ratio: 1 / 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 8px;
-            font-size: 0.8rem;
-            color: #666;
-            overflow: hidden;
-        }
-
-        .gallery-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        footer {
-            background: #333;
-            color: white;
-            padding: 30px 20px;
-            text-align: center;
+        .menu-btn {
+            display: none;
+            font: inherit;
             font-size: 0.9rem;
+            color: #fff;
+            background: transparent;
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            padding: 6px 12px;
+            cursor: pointer;
         }
 
-        .contact-info { margin-bottom: 10px; }
+        .drawer {
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+            flex: 1;
+            margin-top: 36px;
+        }
+
+        .side nav a {
+            display: block;
+            padding: 9px 12px;
+            margin: 0 -12px;
+            border-left: 3px solid transparent;
+            text-decoration: none;
+            color: var(--muted);
+        }
+        .side nav a:hover { background: rgba(255,255,255,0.05); color: #fff; }
+        .side nav a[aria-current="true"] {
+            color: #fff;
+            border-left-color: var(--amber);
+            background: rgba(251, 191, 36, 0.1);
+        }
+
+        .side h2 { font-size: 0.9rem; font-weight: 500; color: var(--muted); margin-bottom: 10px; }
+        .class-info dt { font-size: 0.8rem; color: var(--muted); margin-top: 10px; }
+        .class-info dd { color: #fff; }
 
         .btn {
             display: inline-block;
-            background: #2980b9;
-            color: white;
-            padding: 10px 20px;
+            margin-top: 18px;
+            background: var(--amber);
+            color: #1B1500;
+            font-weight: 600;
+            font-size: 0.9rem;
+            padding: 9px 16px;
+            border-radius: var(--radius);
             text-decoration: none;
-            border-radius: 5px;
-            margin-top: 10px;
+        }
+        .btn:hover { background: #FFD24D; }
+
+        .contact { margin-top: auto; font-size: 0.85rem; line-height: 1.8; }
+        .contact strong { color: #fff; font-weight: 600; }
+
+        /* ---------- Main ---------- */
+        main, .site-foot {
+            margin-left: var(--side-w);
+            max-width: calc(920px + var(--side-w));
+        }
+        main { padding: 64px 56px 24px; }
+        section { scroll-margin-top: 24px; position: relative; }
+        section + section { margin-top: 88px; }
+
+        #security::before {
+            content: "";
+            position: absolute;
+            inset: -64px -56px auto -56px;
+            height: 560px;
+            background-image: radial-gradient(rgba(147, 160, 192, 0.32) 1px, transparent 1px);
+            background-size: 24px 24px;
+            -webkit-mask-image: radial-gradient(ellipse at 75% 30%, #000 10%, transparent 70%);
+            mask-image: radial-gradient(ellipse at 75% 30%, #000 10%, transparent 70%);
+            pointer-events: none;
+        }
+        #security > * { position: relative; }
+
+        h1, h2.sec {
+            font-family: var(--serif);
+            color: #fff;
+            line-height: 1.3;
+        }
+        h1 { font-size: clamp(1.9rem, 3.6vw, 2.7rem); margin-bottom: 18px; }
+        h2.sec { font-size: 1.6rem; margin-bottom: 18px; }
+
+        /* Hero */
+        .hero {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 360px;
+            gap: 48px;
+            align-items: center;
+        }
+        .lead { max-width: 60ch; }
+        .lead + .lead { margin-top: 12px; color: var(--muted); }
+
+        .terms { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 28px; }
+        .term {
+            font: inherit;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 14px;
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            cursor: pointer;
+            color: var(--text);
+        }
+        .term .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--c); box-shadow: 0 0 10px var(--c); }
+        .term[aria-pressed="true"] { border-color: var(--c); box-shadow: 0 0 0 2px var(--c), 0 0 18px -2px var(--c); }
+
+        .term-panel {
+            --c: var(--blue);
+            margin-top: 14px;
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-left: 4px solid var(--c);
+            border-radius: 0 10px 10px 0;
+            padding: 16px 20px;
+            max-width: 60ch;
+            transition: border-color 0.2s;
+        }
+        .term-panel h3 { font-size: 1.05rem; color: #fff; }
+        .term-panel h3 span { font-size: 0.85rem; font-weight: 400; color: var(--muted); margin-left: 8px; }
+        .term-panel p { margin-top: 4px; }
+
+        .triad { width: 100%; height: auto; overflow: visible; }
+        .triad circle { mix-blend-mode: screen; fill-opacity: 0.28; transition: fill-opacity 0.2s, filter 0.2s; cursor: pointer; }
+        .triad .ring.on circle { fill-opacity: 0.62; filter: drop-shadow(0 0 18px currentColor); }
+        .triad .ring[data-term="c"] { color: #5B8CFF; }
+        .triad .ring[data-term="i"] { color: #2DD4BF; }
+        .triad .ring[data-term="a"] { color: #FBBF24; }
+        .triad text { font-family: var(--sans); fill: #fff; pointer-events: none; }
+        .triad .t-main { font-size: 17px; font-weight: 600; }
+        .triad .t-core { font-size: 12px; font-weight: 600; }
+
+        /* Quick jump tiles */
+        .jump {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 12px;
+            margin-top: 56px;
+        }
+        .tile {
+            font: inherit;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 16px;
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            color: var(--text);
+            cursor: pointer;
+        }
+        .tile:hover { border-color: var(--g); background: var(--surface-2); }
+        .tile b { display: block; font-weight: 600; color: #fff; }
+        .tile small { color: var(--muted); font-size: 0.85rem; }
+
+        /* Icon tile (shared) */
+        .ico {
+            flex: none;
+            width: 42px;
+            height: 42px;
+            display: grid;
+            place-items: center;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.06);
+            background: color-mix(in srgb, var(--g) 18%, transparent);
+            color: var(--g);
+            font-family: var(--mono);
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+        [data-g="html"] { --g: var(--orange); }
+        [data-g="css"]  { --g: var(--blue); }
+        [data-g="js"]   { --g: #FACC15; }
+        [data-g="html"] .ico::before { content: "</>"; }
+        [data-g="css"]  .ico::before { content: "{ }"; }
+        [data-g="js"]   .ico::before { content: "JS"; }
+
+        /* Examples */
+        .controls { display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: center; margin-bottom: 8px; }
+        .tabs { display: flex; gap: 4px; padding: 4px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); }
+        .tab {
+            font: inherit;
+            font-size: 0.9rem;
+            font-weight: 500;
+            padding: 6px 14px;
+            border: 0;
+            border-radius: 4px;
+            background: transparent;
+            color: var(--muted);
+            cursor: pointer;
+        }
+        .tab:hover { color: #fff; }
+        .tab[aria-pressed="true"] { background: var(--blue); color: #08112B; }
+
+        .search {
+            font: inherit;
+            flex: 1 1 220px;
+            max-width: 340px;
+            padding: 9px 12px;
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            background: var(--surface);
+            color: var(--text);
+        }
+        .search::placeholder { color: var(--muted); }
+
+        .group h3 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.05rem;
+            color: #fff;
+            margin: 32px 0 12px;
+        }
+        .group h3::before {
+            content: "";
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--g);
+            box-shadow: 0 0 12px var(--g);
+        }
+        .count { font-size: 0.85rem; font-weight: 400; color: var(--muted); }
+
+        .group ul {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+            gap: 10px;
+        }
+        .group li a {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            height: 100%;
+            padding: 14px;
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            text-decoration: none;
+        }
+        .group li a:hover { border-color: var(--g); background: var(--surface-2); }
+        .txt { display: flex; flex-direction: column; min-width: 0; }
+        .title { font-weight: 500; color: var(--text); line-height: 1.45; }
+        .path { font-family: var(--mono); font-size: 0.75rem; color: var(--muted); overflow-wrap: anywhere; margin-top: 2px; }
+        .empty { margin-top: 32px; color: var(--muted); }
+
+        /* Gallery */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+            gap: 12px;
+        }
+        .gallery-item {
+            aspect-ratio: 4 / 3;
+            display: flex;
+            align-items: flex-end;
+            padding: 12px 14px;
+            border-radius: 12px;
+            color: #fff;
+            font-weight: 500;
+            font-size: 0.9rem;
+            overflow: hidden;
+            background: linear-gradient(135deg, #1E3A8A, #5B8CFF);
+        }
+        .gallery-item:nth-child(2) { background: linear-gradient(135deg, #0F766E, #2DD4BF); color: #04201C; }
+        .gallery-item:nth-child(3) { background: linear-gradient(135deg, #B45309, #FBBF24); color: #261800; }
+        .gallery-item:nth-child(4) { background: linear-gradient(135deg, #9D174D, #F472B6); }
+        .gallery-item img { width: 100%; height: 100%; object-fit: cover; margin: -12px -14px; }
+
+        .site-foot { padding: 32px 56px 48px; font-size: 0.85rem; color: var(--muted); }
+
+        /* ---------- Responsive ---------- */
+        @media (max-width: 1180px) {
+            .hero { grid-template-columns: minmax(0, 1fr); }
+            .triad { max-width: 340px; margin: 8px auto 0; }
+        }
+
+        @media (max-width: 860px) {
+            .side {
+                position: sticky;
+                top: 0;
+                width: 100%;
+                inset: auto;
+                padding: 12px 16px;
+                max-height: 100vh;
+                border-right: 0;
+                border-bottom: 1px solid var(--line);
+            }
+            .menu-btn { display: inline-block; }
+            .drawer { display: none; margin-top: 20px; gap: 24px; }
+            .side.open .drawer { display: flex; }
+            .contact { margin-top: 0; }
+            main, .site-foot { margin-left: 0; }
+            main { padding: 36px 20px 16px; }
+            #security::before { inset: -36px -20px auto -20px; }
+            .site-foot { padding: 24px 20px 40px; }
+            section { scroll-margin-top: 72px; }
+            section + section { margin-top: 64px; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            * { transition: none !important; }
         }
     </style>
 </head>
 
 <body>
 
-    <header>
-        <h1>My Security Web</h1>
-    </header>
-
-    <section id="security">
-        <h2>01. 컴퓨터 보안 소개</h2>
-        <p>
-            컴퓨터 보안은 정보 자산을 불법적인 접근, 변조, 파괴로부터
-            보호하는 기술입니다. 현대 사회에서
-            <strong>기밀성, 무결성, 가용성</strong>은 보안의 핵심 3요소로 불립니다.
-        </p>
-        <p style="margin-top:10px;">
-            스마트폰 환경에서는 개인정보 유출 방지를 위한
-            2단계 인증과 암호화가 매우 중요합니다.
-        </p>
-    </section>
-
-    <section id="class-info">
-        <h2>02. 내 수업 정보</h2>
-        <ul style="list-style: none; padding: 0;">
-            <li><strong>강의명:</strong> 정보보안 개론</li>
-            <li><strong>강의실:</strong> 공학관 302호</li>
-            <li><strong>수업시간:</strong> 매주 화요일 14:00 - 16:00</li>
-            <li><strong>담당교수:</strong> 홍길동 교수님</li>
-        </ul>
-        <a href="#" class="btn">강의 계획서 다운로드</a>
-    </section>
-
-    <section id="examples">
-        <h2>03. 실습 예제 목록</h2>
-
-        <div class="example-container">
-
-            <div class="example-box">
-                <h3>HTML 예제</h3>
-                <ul>
-                    <li><a href="html/basic-tags.html">• 기본 태그 활용 (h1~h6, p)</a></li>
-                    <li><a href="html/PharagraghHtml.html">• 문단 관련 태그 (p, br, pre, hr)</a></li>
-                    <li><a href="html/metaHtml.html">• 메타 태그 (meta)</a></li>
-                    <li><a href="html/frameHtml.html">• HTML 문서의 기본 구조</a></li>
-                    <li><a href="html/list-link.html">• 리스트와 하이퍼링크 (ul, a)</a></li>
-                    <li><a href="html/media.html">• 이미지 및 멀티미디어 삽입</a></li>
-                    <li><a href="html/table.html">• 테이블 구조 설계 (table)</a></li>
-                    <li><a href="html/form.html">• 입력 양식 만들기 (form)</a></li>
-                </ul>
-            </div>
-
-            <div class="example-box">
-                <h3>CSS 예제</h3>
-                <ul>
-                    <li><a href="css/selectors.html">• CSS3 선택자 가이드</a></li>
-                    <li><a href="css/typ.html">• 텍스트 스타일링 & 타이포그래피</a></li>
-                    <li><a href="css/box-model.html">• 박스 모델 (margin, padding)</a></li>
-                    <li><a href="css/margin-padding.html">• Margin & Padding 실습</a></li>
-                    <li><a href="css/position.html">• CSS Position 실습</a></li>
-                    <li><a href="css/gradient.html">• 배경 이미지 및 그라데이션</a></li>
-                    <li><a href="css/flexbox.html">• Flexbox 레이아웃 배치</a></li>
-                    <li><a href="css/responsive.html">• 반응형 웹 미디어 쿼리</a></li>
-                </ul>
-            </div>
-
-            <div class="example-box">
-                <h3>CSS 레이아웃 예제 (교재 6장)</h3>
-                <ul>
-                    <li><a href="cssDsgn/display.html">• 예제 6-1 display 속성</a></li>
-                    <li><a href="cssDsgn/margin.html">• 예제 6-2 마진과 패딩</a></li>
-                    <li><a href="cssDsgn/static.html">• 예제 6-3 위치 설정: static</a></li>
-                    <li><a href="cssDsgn/position.html">• 예제 6-8 혼합 위치 설정</a></li>
-                    <li><a href="cssDsgn/z-index.html">• 예제 6-9 z-Index</a></li>
-                    <li><a href="cssDsgn/opacity.html">• 예제 6-10 투명성(Opacity)</a></li>
-                    <li><a href="cssDsgn/Overflow.html">• 예제 6-11 Overflow</a></li>
-                    <li><a href="cssDsgn/floatandclear.html">• 예제 6-12 Float and Clear</a></li>
-                    <li><a href="cssDsgn/Navigation.html">• 예제 6-14 Navigation</a></li>
-                </ul>
-            </div>
-
-            <div class="example-box">
-                <h3>CSS 애니메이션 및 트랜스폼 예제 (교재 7장)</h3>
-                <ul>
-                    <li><a href="AI_WEB/CSSANIME.html">• CSS 애니메이션</a></li>
-                    <li><a href="AI_WEB/Transform - matrix().html">• Transform Matrix</a></li>
-                    <li><a href="AI_WEB/Transform - rotate().html">• Transform Rotate</a></li>
-                    <li><a href="AI_WEB/Transform - scale().html">• Transform Scale</a></li>
-                    <li><a href="AI_WEB/Transform - skew().html">• Transform Skew</a></li>
-                    <li><a href="AI_WEB/Transform - translate().html">• Transform Translate</a></li>
-                    <li><a href="AI_WEB/Transform3D - translate().html">• Transform 3D</a></li>
-                    <li><a href="AI_WEB/Transition 효과 버튼.html">• Transition 효과 버튼</a></li>
-                    <li><a href="rotate3d() 3차원 회전 예제.html">• 3차원 회전 예제</a></li>
-                </ul>
-            </div>
-
-            <div class="example-box">
-                <h3>JavaScript 학습 문서</h3>
-                <ul>
-                    <li><a href="javascript/mathMethod.html">• Math 객체 속성 시각화</a></li>
-                    <li><a href="javascript/mathHethod01.html">• Math 메소드 그래픽 애니메이션</a></li>
-                    <li><a href="javascript/strmethod.html">• String 속성과 메소드 설명</a></li>
-                    <li><a href="test/git.html">• Git 개념과 명령어 안내</a></li>
-
-                    <!-- 새로 추가한 JavaScript DOM 링크 -->
-                    <li>
-                        <a href="javascript-dom.html">
-                            • JavaScript DOM 학습하기
-                        </a>
-                    </li>
-                </ul>
-            </div>
-
+    <aside class="side" id="top">
+        <div class="side-head">
+            <a class="brand" href="#security">My Security Web</a>
+            <button class="menu-btn" type="button" aria-expanded="false" aria-controls="drawer">메뉴</button>
         </div>
-    </section>
 
-    <section id="gallery">
-        <h2>04. 갤러리</h2>
-        <div class="gallery-grid">
-            <div class="gallery-item">이미지 1</div>
-            <div class="gallery-item">이미지 2</div>
-            <div class="gallery-item">이미지 3</div>
-            <div class="gallery-item">이미지 4</div>
-        </div>
-    </section>
+        <div class="drawer" id="drawer">
+            <nav aria-label="페이지 메뉴">
+                <a href="#security">컴퓨터 보안 소개</a>
+                <a href="#examples">실습 예제</a>
+                <a href="#gallery">갤러리</a>
+            </nav>
 
-    <footer>
-        <div class="contact-info">
-            <h3>Contact & Info</h3>
-            <p>Name: 홍길동 (20260938)</p>
-            <p>Email: contact@example.com</p>
-            <p>Tel: 010-1234-5678</p>
+            <div class="class-info">
+                <h2>내 수업 정보</h2>
+                <dl>
+                    <dt>강의명</dt><dd>정보보안 개론</dd>
+                    <dt>강의실</dt><dd>공학관 302호</dd>
+                    <dt>수업시간</dt><dd>매주 화요일 14:00 - 16:00</dd>
+                    <dt>담당교수</dt><dd>홍길동 교수님</dd>
+                </dl>
+                <a href="#" class="btn">강의 계획서 다운로드</a>
+            </div>
+
+            <address class="contact" style="font-style: normal;">
+                <strong>홍길동 (20260938)</strong><br>
+                contact@example.com<br>
+                010-1234-5678
+            </address>
         </div>
-        <hr style="margin: 15px 0; border: 0; border-top: 1px solid #555;">
+    </aside>
+
+    <main>
+        <section id="security">
+            <div class="hero">
+                <div>
+                    <h1>정보를 지키는 세 가지 기준</h1>
+                    <p class="lead">
+                        컴퓨터 보안은 정보 자산을 불법적인 접근, 변조, 파괴로부터 보호하는 기술입니다.
+                        현대 사회에서 기밀성, 무결성, 가용성은 보안의 핵심 3요소로 불립니다.
+                    </p>
+
+                    <div class="terms" role="group" aria-label="보안의 3요소">
+                        <button class="term" type="button" data-term="c" style="--c: var(--blue)" aria-pressed="true"><span class="dot"></span>기밀성</button>
+                        <button class="term" type="button" data-term="i" style="--c: var(--teal)" aria-pressed="false"><span class="dot"></span>무결성</button>
+                        <button class="term" type="button" data-term="a" style="--c: var(--amber)" aria-pressed="false"><span class="dot"></span>가용성</button>
+                    </div>
+
+                    <div class="term-panel" id="panel" aria-live="polite">
+                        <h3 id="panel-title">기밀성<span>Confidentiality</span></h3>
+                        <p id="panel-desc">허가된 사람만 정보를 볼 수 있어야 합니다. 암호화와 접근 권한 설정이 대표적인 방법입니다.</p>
+                    </div>
+
+                    <p class="lead" style="margin-top: 24px;">
+                        스마트폰 환경에서는 개인정보 유출 방지를 위한 2단계 인증과 암호화가 매우 중요합니다.
+                    </p>
+                </div>
+
+                <svg class="triad" viewBox="0 0 400 390" role="img" aria-label="기밀성, 무결성, 가용성이 서로 겹쳐 있는 보안의 세 요소">
+                    <g class="ring on" data-term="c"><circle cx="200" cy="125" r="105" fill="#5B8CFF"/></g>
+                    <g class="ring" data-term="i"><circle cx="135" cy="240" r="105" fill="#2DD4BF"/></g>
+                    <g class="ring" data-term="a"><circle cx="265" cy="240" r="105" fill="#FBBF24"/></g>
+                    <text class="t-main" x="200" y="72" text-anchor="middle">기밀성</text>
+                    <text class="t-main" x="82" y="296" text-anchor="middle">무결성</text>
+                    <text class="t-main" x="318" y="296" text-anchor="middle">가용성</text>
+                    <text class="t-core" x="200" y="196" text-anchor="middle">정보</text>
+                    <text class="t-core" x="200" y="213" text-anchor="middle">자산</text>
+                </svg>
+            </div>
+
+            <div class="jump">
+                <button class="tile" type="button" data-tab="html" data-g="html"><span class="ico" aria-hidden="true"></span><span><b>HTML 예제</b><small class="tile-count"></small></span></button>
+                <button class="tile" type="button" data-tab="css" data-g="css"><span class="ico" aria-hidden="true"></span><span><b>CSS 예제</b><small class="tile-count"></small></span></button>
+                <button class="tile" type="button" data-tab="js" data-g="js"><span class="ico" aria-hidden="true"></span><span><b>JavaScript 학습 문서</b><small class="tile-count"></small></span></button>
+            </div>
+        </section>
+
+        <section id="examples">
+            <h2 class="sec">실습 예제 목록</h2>
+
+            <div class="controls">
+                <div class="tabs" role="group" aria-label="예제 종류">
+                    <button class="tab" type="button" data-tab="all" aria-pressed="true">전체</button>
+                    <button class="tab" type="button" data-tab="html" aria-pressed="false">HTML</button>
+                    <button class="tab" type="button" data-tab="css" aria-pressed="false">CSS</button>
+                    <button class="tab" type="button" data-tab="js" aria-pressed="false">JavaScript</button>
+                </div>
+                <input class="search" id="q" type="search" placeholder="예제 이름으로 검색" aria-label="예제 검색">
+            </div>
+
+            <div class="group" data-group="html" data-g="html">
+                <h3>HTML 예제 <span class="count"></span></h3>
+                <ul>
+                    <li><a href="html/basic-tags.html"><span class="ico" aria-hidden="true"></span><span class="txt"><span class="title">기본 태그 활용 (h1~h6, p)</span><span class="path">html/basic-tags.html</span></span></a></li>
+                    <li><a href="html/PharagraghHtml.html"><span class="ico" aria-hidden="true"></span><span class="txt"><span class="title">문단 관련 태그 (p, br, pre, hr)</span><span class="path">html/PharagraghHtml.html</span></span></a></li>
+                    <li><a href="html/metaHtml.html"><span class="ico" aria-hidden="true"></span><span class="txt"><span class="title">메타 태그 (meta)</span><span class="path">html/metaHtml.html</span></span></a></li>
+                    <li><a href="html/frameHtml.html"><span class="ico" aria-hidden="true"></span><span class="txt"><span class="title">HTML 문서의 기본 구조</span><span class="path">html/frameHtml.html</span></span></a></li>
+                    <li><a href="html/list-link.html"><span class="ico" aria-hidden="true"></span><span class="txt"><span class="title">리스트와 하이퍼링크 (ul, a)</span><span class="path">html/list-link.html</span></span></a></li>
+                    <li><a href="html/media.html"><span class="ico" aria-hidden="true"></span><span class="txt"><span class="title">이미지 및 멀티미디어 삽입</span><span class="path">html/media.html</span></span></a></li>
+                    <li><a href="html/table.html"><span class="ico" aria-hidden="true"></span><span class="txt"><span class="title">테이블 구조 설계 (table)</span><span class="path">html/table.html</span></span></a></li>
+                    <li><a href="html/form.html"><span class="ico" aria-hidden="true"></span><span class="txt"><span class="title">입력 양식 만들기 (form)</span><span class="path">html/form.html</span></span></a></li>
+                </ul>
+            </div>
+
+            <div class="group" data-group="css" data-g="css">
+                <h3>CSS 예제 <span class="count"></span></h3>
+                <ul>
+                    <li><a href="css/selectors.html"><span class="ico" aria-hidden="true"></span><span class="txt"><span class="title">CSS3 선택자 가이드</span><span class="path">css/selectors.html</span></span></a></li>
+                    <li><a href="css/typ.html"><span class="ico" aria-hidden="true"></span><span class="txt"><span class="title">텍스트 스타일링 &amp; 타이포그래피</span><span class="path">css/typ.html</span></span></a></li>
+                    <li><a href="css/box-model.html"><span class="ico" aria-hidden="true"></span><span class="txt"><span class="title">박스 모델 (margin, padding)</span><span class="path">css/box-model.html</span></span></a></li>
+                    <li><a href="css/margin-padding.html"><span class="ico" aria-hidden="true"></span><span class="txt"><span class="title">Margin &amp; Padding 실습</span><span class="path">css/margin-padding.html</span></span></a></li>
+                    <li><a href="css/position.html"><span class="ico" aria-hidden="true"></span><span class="txt"><span class="title">CSS Position 실습</span><span class="path">css/position.html</span></span></a></li>
+                    <li><a href="css/gradient.html"><span class="ico" aria-hidden="true"></span><span class="txt"><span class="title">배경 이미지 및 그라데이션</span><span class="path">css/gradient.html</span></span></a></li>
+                    <li><a href="css/flexbox.html"><span class="ico" aria-hidden="true"></span><span class="txt"><span class="title">Flexbox 레이아웃 배치</span><span class="path">css/flexbox.html</span></span></a></li>
+                    <li><a href="css/responsive.html"><span class="ico" aria-hidden="true"></span><span class="txt"><span class="title">반응형 웹 미디어 쿼리</span><span class="path">css/responsive.html</span></span></a></li>
+                </ul>
+            </div>
+
+            <div class="group" data-group="js" data-g="js">
+                <h3>JavaScript 학습 문서 <span class="count"></span></h3>
+                <ul>
+                    <li><a href="javascript/mathMethod.html"><span class="ico" aria-hidden="true"></span><span class="txt"><span class="title">Math 객체 속성 시각화</span><span class="path">javascript/mathMethod.html</span></span></a></li>
+                    <li><a href="javascript/mathHethod01.html"><span class="ico" aria-hidden="true"></span><span class="txt"><span class="title">Math 메소드 그래픽 애니메이션</span><span class="path">javascript/mathHethod01.html</span></span></a></li>
+                    <li><a href="javascript/strmethod.html"><span class="ico" aria-hidden="true"></span><span class="txt"><span class="title">String 속성과 메소드 설명</span><span class="path">javascript/strmethod.html</span></span></a></li>
+                    <li><a href="test/git.html"><span class="ico" aria-hidden="true"></span><span class="txt"><span class="title">Git 개념과 명령어 안내</span><span class="path">test/git.html</span></span></a></li>
+                    <li><a href="javascript-dom.html"><span class="ico" aria-hidden="true"></span><span class="txt"><span class="title">JavaScript DOM 학습하기</span><span class="path">javascript-dom.html</span></span></a></li>
+                </ul>
+            </div>
+
+            <p class="empty" id="empty" hidden>검색 결과가 없습니다. 다른 단어로 검색해 보세요.</p>
+        </section>
+
+        <section id="gallery">
+            <h2 class="sec">갤러리</h2>
+            <div class="gallery-grid">
+                <!-- 실제 사진은 <img src="images/photo1.jpg" alt="설명"> 으로 바꿔 넣으세요 -->
+                <div class="gallery-item">이미지 1</div>
+                <div class="gallery-item">이미지 2</div>
+                <div class="gallery-item">이미지 3</div>
+                <div class="gallery-item">이미지 4</div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-foot">
         <p>&copy; 2026 20260938. All Rights Reserved.</p>
     </footer>
 
+    <script>
+        // 모바일 메뉴
+        const side = document.querySelector('.side');
+        const menuBtn = document.querySelector('.menu-btn');
+        menuBtn.addEventListener('click', () => {
+            const open = side.classList.toggle('open');
+            menuBtn.setAttribute('aria-expanded', open);
+        });
+        document.querySelectorAll('.side nav a').forEach(a => a.addEventListener('click', () => {
+            side.classList.remove('open');
+            menuBtn.setAttribute('aria-expanded', 'false');
+        }));
+
+        // 현재 위치 표시
+        const navLinks = [...document.querySelectorAll('.side nav a')];
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(e => {
+                if (!e.isIntersecting) return;
+                navLinks.forEach(a => a.setAttribute('aria-current', a.getAttribute('href') === '#' + e.target.id));
+            });
+        }, { rootMargin: '-35% 0px -60% 0px' });
+        document.querySelectorAll('main section').forEach(s => observer.observe(s));
+
+        // 보안 3요소
+        const TERMS = {
+            c: { name: '기밀성', en: 'Confidentiality', color: 'var(--blue)', desc: '허가된 사람만 정보를 볼 수 있어야 합니다. 암호화와 접근 권한 설정이 대표적인 방법입니다.' },
+            i: { name: '무결성', en: 'Integrity', color: 'var(--teal)', desc: '정보가 허가 없이 바뀌거나 지워지지 않아야 합니다. 변경 기록과 전자서명으로 위·변조를 확인합니다.' },
+            a: { name: '가용성', en: 'Availability', color: 'var(--amber)', desc: '필요할 때 언제든 정보와 시스템을 쓸 수 있어야 합니다. 백업과 이중화로 장애와 공격에 대비합니다.' }
+        };
+        const panel = document.getElementById('panel');
+        function selectTerm(key) {
+            const t = TERMS[key];
+            document.querySelectorAll('.term').forEach(b => b.setAttribute('aria-pressed', b.dataset.term === key));
+            document.querySelectorAll('.ring').forEach(r => r.classList.toggle('on', r.dataset.term === key));
+            document.getElementById('panel-title').innerHTML = t.name + '<span>' + t.en + '</span>';
+            document.getElementById('panel-desc').textContent = t.desc;
+            panel.style.setProperty('--c', t.color);
+        }
+        document.querySelectorAll('.term').forEach(b => b.addEventListener('click', () => selectTerm(b.dataset.term)));
+        document.querySelectorAll('.ring').forEach(r => {
+            r.addEventListener('click', () => selectTerm(r.dataset.term));
+            r.addEventListener('mouseenter', () => selectTerm(r.dataset.term));
+        });
+
+        // 예제 필터
+        const tabs = [...document.querySelectorAll('.tab')];
+        const groups = [...document.querySelectorAll('.group')];
+        const q = document.getElementById('q');
+        const empty = document.getElementById('empty');
+        let current = 'all';
+
+        function applyFilter() {
+            const term = q.value.trim().toLowerCase();
+            let total = 0;
+            groups.forEach(g => {
+                let shown = 0;
+                g.querySelectorAll('li').forEach(li => {
+                    const match = !term || li.textContent.toLowerCase().includes(term);
+                    li.hidden = !match;
+                    if (match) shown++;
+                });
+                g.querySelector('.count').textContent = shown + '개';
+                g.hidden = !(current === 'all' || g.dataset.group === current) || shown === 0;
+                if (!g.hidden) total += shown;
+            });
+            empty.hidden = total > 0;
+        }
+        tabs.forEach(t => t.addEventListener('click', () => {
+            current = t.dataset.tab;
+            tabs.forEach(x => x.setAttribute('aria-pressed', x === t));
+            applyFilter();
+        }));
+        q.addEventListener('input', applyFilter);
+        applyFilter();
+
+        // 바로가기 타일
+        document.querySelectorAll('.tile').forEach(t => {
+            const g = document.querySelector('.group[data-group="' + t.dataset.tab + '"]');
+            t.querySelector('.tile-count').textContent = g.querySelectorAll('li').length + '개 보기';
+            t.addEventListener('click', () => {
+                q.value = '';
+                tabs.find(x => x.dataset.tab === t.dataset.tab).click();
+                document.getElementById('examples').scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+    </script>
+
 </body>
 </html>
-```
